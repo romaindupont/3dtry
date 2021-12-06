@@ -1,0 +1,14 @@
+$font-size: 1rem;
+$font-color: lch(53 105 40);
+
+html {
+  font-size: $font-size;
+  color: $font-color;
+}
+.triangle1 {
+  display: inline-block;
+  height: 0;
+  width: 0;
+  border-bottom: 150px solid green;
+  border-left: 67px solid transparent;
+}
