@@ -5,6 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
@@ -13,7 +14,7 @@ heading.textContent = 'Essai';
 
 const veldt = () => {
 	const container = document.getElementById('container');
-	const renderer = new THREE.WebGLRenderer( { antialias: false } );
+	const renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
@@ -23,35 +24,35 @@ const veldt = () => {
   renderer.toneMappingExposure = 0.85;
   container.appendChild(renderer.domElement);
 
-  const camera = new THREE.PerspectiveCamera(500, window.innerWidth / window.innerHeight, 1, 1000);
+  const camera = new THREE.PerspectiveCamera(95, window.innerWidth / window.innerHeight, 0.2, 1000);
 	/* console.log(camera) */
-	camera.focus = 110
-	camera.updateProjectionMatrix()
-  camera.position.set(5, 5, 500);
+	/* camera.focus = 90
+	camera.updateProjectionMatrix() */
+	camera.position.set(100, 400, -350);
 
   const controls = new OrbitControls(camera, container);
-  controls.target.set(0, 0.5, 0);
+  controls.target.set(0.5, 0.5, 0.5);
   controls.minDistance = 0.8;
   controls.minZoom = 0.5;
-
+	controls.update();  
   const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);
   scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
 
-	const grid = new THREE.GridHelper(10, 0, 0xeeeeee, 0xeeeeee);
+/* 	const grid = new THREE.GridHelper(10, 0, 0xeeeeee, 0xeeeeee);
   grid.material.opacity = 0.1;
   grid.material.depthWrite = true;
   grid.material.transparent = true;
-  scene.add(grid);
+  scene.add(grid); */
 	const glassMaterial = new THREE.MeshPhysicalMaterial({
     color: 0xffffff, metalness: 0, roughness: 0, transmission: 0.9, transparent: true
   });
+	const bodyMaterial = new THREE.MeshPhysicalMaterial({color: 0xd31426, metalness: 1, roughness: 1, clearcoat: 0.6, clearcoatRoughness: 0.5, transparent: false, side: THREE.DoubleSide});
 	const VisorInput = document.getElementById('casque');
 	VisorInput.addEventListener('change', function (e) {
-		/* console.log(e.target.value) */
-    glassMaterial.color.set(e.target.value);
+    bodyMaterial.color.set(e.target.value);
 
   })
 /* 	let mesh = null;
@@ -119,16 +120,23 @@ const veldt = () => {
 	
 		}
 	); */
-	const loader = new GLTFLoader();
+	/* const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath('../src/assets/3d/');
-  loader.setDRACOLoader(dracoLoader);
-  loader.load('../src/assets/3d/test2.glb', function (gltf) {
-		/* console.log(gltf) */
-    const carModel = gltf.scene.children[0];
-/*     carModel.getObjectByName('Default').children[0].children[8].children[0].children[0].children[0].material = glassMaterial; */
-		carModel.getObjectByName("Visor_short_2").material = glassMaterial;
-		carModel.getObjectByName("Visor_short_3").material = glassMaterial;
+  loader.setDRACOLoader(dracoLoader); */
+	const loader = new Rhino3dmLoader();
+	loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' );
+  loader.load('../src/assets/3d/test_full4.3dm', function (gltf) {
+		console.log(gltf.children)
+		const carModel = gltf;
+ 	/* 	for (let i = 0; i = 0; i++) { */
+			carModel.children[0].material = bodyMaterial;
+	/* 	}  */
+    
+		/* carModel.children[1].material = bodyMaterial;
+		carModel.children[2].material = bodyMaterial; */
+    /* carModel.getObjectByName('Default').children[0].children[1].children[10].children[1].children[0].children[0].material = glassMaterial; */
+		/* carModel.getObjectByName("Visor_short_2").material = glassMaterial;
+		carModel.getObjectByName("Visor_short_3").material = glassMaterial; */
     scene.add(carModel);
   },
 
@@ -140,6 +148,7 @@ const veldt = () => {
     console.log('An error happened = ', error);
   }
 );
+
 	function render() {
     renderer.render(scene, camera); }
 
