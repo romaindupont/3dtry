@@ -63,18 +63,35 @@ const veldt = () => {
     map.repeat.set(35, 35);
   }); */
 	const textureBody = new THREE.TextureLoader();
-	const texture1 = textureBody.load('../src/assets/textures/CF_dark_arte-3d.jpg', function (map) {
+	/* const texture1 = textureBody.load('../src/assets/textures/CF_dark_arte-3d.jpg', function (map) {
     map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.anisotropy = 1;
-    map.repeat.set(50, 50);
+    map.repeat.set(30, 30);
   })
 	const texture2 = textureBody.load('../src/assets/textures/CF_spec_arte-3d.jpg', function (map) {
     map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.anisotropy = 1;
     map.repeat.set(40, 40);
-  })
+  }) */
+	const carbonBaseColor = textureBody.load('../src/assets/textures/carbon_fibers_basecolor_1k.jpg', /* function (map) {
+		map.wrapS = THREE.RepeatWrapping;
+    map.wrapT = THREE.RepeatWrapping;
+    map.anisotropy = 1;
+    map.repeat.set(30, 30);
+  } */)
+	const carbonNormal = textureBody.load('../src/assets/textures/carbon_fibers_normal_1k.jpg')
+	const carbonHeight = textureBody.load('../src/assets/textures/carbon_fibers_height_1k.jpg')
+	const carbonRouhness = textureBody.load('../src/assets/textures/carbon_fibers_roughness_1k.jpg')
+	const carbonBump = textureBody.load('../src/assets/textures/carbon_fibers_bump_1k.jpg')
+	const carbonanistroAngle = textureBody.load('../src/assets/textures/carbon_fibers_anistrophic_angle_1k.jpg', function (map) {
+		map.wrapS = THREE.RepeatWrapping;
+		map.wrapT = THREE.RepeatWrapping;
+		map.anisotropy = 1;
+		map.repeat.set(30, 30);
+	})
+	const carbonanistroLevel = textureBody.load('../src/assets/textures/carbon_fibers_anistrophic_level_1k.jpg')
 /* 	const myMesh = new THREE.Mesh(myGeometry, myMaterials); */
 	//Or:
 	/* myMesh.materials = myMaterials; */
@@ -85,7 +102,8 @@ const veldt = () => {
 		color: 0xd31426 , metalness: 0.237, roughness: 0.11, clearcoat: 0.07, clearcoatRoughness: 0.16, transparent: false, side: THREE.DoubleSide, reflectivity: 0.148, map:textureBody
 	}); */
 	const bodyMaterial = new THREE.MeshPhysicalMaterial({
-		/* color: 0x4f4f4f, */ metalness: 1, roughness: 0.5, clearcoat: 1, clearcoatRoughness: 0.8, transparent: false, side: THREE.DoubleSide, reflectivity: 0.2, map:texture1, bumpMap:texture2
+		/* color: 0xffffff, */ metalness: 0.5, roughness: 0.2, clearcoat: 0.8, clearcoatRoughness: 0.2, side: THREE.DoubleSide, reflectivity: 0.4, envMap:carbonBaseColor, bumpMap:carbonBump,normalMap:carbonNormal, roughnessMap:carbonRouhness,displacementMap:carbonHeight, map:carbonanistroAngle , aoMap:carbonanistroLevel,
+		envMapIntensity: 100
 	});
 
 	const bodyMaterialTry = new THREE.MeshPhysicalMaterial({color: 0x32a852, metalness: 1, roughness: 1, clearcoat: 0.6, clearcoatRoughness: 0.5, transparent: false, side: THREE.DoubleSide});
