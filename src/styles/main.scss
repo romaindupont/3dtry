@@ -5,10 +5,172 @@ html {
   font-size: $font-size;
   color: $font-color;
 }
-.triangle1 {
-  display: inline-block;
-  height: 0;
-  width: 0;
-  border-bottom: 150px solid green;
-  border-left: 67px solid transparent;
+#root {
+	display: none;
+}
+body {
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	height: 100vh;
+	overflow-x: hidden;
+	margin: 0;
+	position: relative;
+}
+#simulateur {
+	width: 100vw;
+	height: 90%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+
+/* canvas {
+	display: block;
+	width: 100%;
+	height: 50%;
+/* 	@media (min-width: 375px) {
+		display: block;
+		width: 690px;
+		height: 800px;
+	}
+	@media (min-width: 992px) {
+		display: block;
+		width: 700px;
+		height: 975px;
+	} */
+
+
+.menu {
+	width: 100vw;
+	height: 500px;
+	z-index: 1;
+	background-color: white;
+	/* top: -100px; */
+	border-radius: 15px;
+	position: absolute;
+	top: 85%;
+
+}
+
+.barreElement {
+	display: block;
+	background-color: rgb(179, 176, 176);
+	margin: 5px auto;
+	width: 100px;
+	height: 5px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.menu--open {
+	top: 50%;
+}
+
+.colorPickerTitle {
+	text-align: center;
+	font-family: 'Montserrat', sans-serif;
+	text-transform: uppercase;
+	display: block;
+	color: #183679;
+}
+.elementChoice {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.elementPicker {
+	width: 80px;
+	margin: 0 2rem;
+	text-align: center;
+	color: #183679;
+	font-family: 'Montserrat', sans-serif;
+	text-transform:capitalize;
+}
+.left {
+	width: 20px;
+	height: 2px;
+	background: #183679;
+	display: block;
+	cursor: pointer;
+	margin: auto;
+	position: relative;
+	transform: rotate(-45deg);
+	&::after {
+		content: '';
+		width: 20px;
+		height: 2px;
+		background: #183679;
+		display: block;
+		cursor: pointer;
+		margin: auto;
+		transform: translate(-10px, 10px) rotate(90deg);
+	}
+}
+
+.right {
+	width: 20px;
+	height: 2px;
+	background: #183679;
+	display: block;
+	cursor: pointer;
+	margin: auto;
+	transform: rotate(45deg);
+	position: relative;
+	&::after {
+		content: '';
+		width: 20px;
+		height: 2px;
+		background: #183679;
+		display: block;
+		cursor: pointer;
+		margin: auto;
+		transform: translate(10px, 10px) rotate(-90deg);
+	}
+}
+
+.pickerVisor {
+	display: none;
+}
+
+.arrow--left {
+	cursor: pointer;
+	width: 50px;
+	height: 68px;
+	display: flex;
+}
+
+.arrow--right {
+	cursor: pointer;
+	width: 50px;
+	height: 68px;
+	display: flex;
+}
+
+.pickerVisorDisplay {
+	display: flex;
+	color: #183679;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 900;
+	font-size: 0.7rem;
+	justify-content: center;
+	margin-top: 2rem;
+}
+.pickerVisorWithout {
+	border: 2px solid #183679;
+	padding: 0.2rem 0.5rem;
+	border-radius: 25px;
+	width: 50px;
+	text-align: center;
+	margin-right: 1rem;
+
+}
+
+.pickerVisorWith {
+	border: 2px solid #183679;
+	padding: 0.2rem;
+	border-radius: 25px;
+	width: 50px;
+	text-align: center;
 }

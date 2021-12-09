@@ -4,18 +4,38 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Romain Dupont Webpack config</title>
+  <title>Simulateur Casque Veldt</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="root"></div>
-	<div id="info">
-		<span class="colorPickerTitle" >Faites un choix</span>
-		<div class="colorPicker-all">
-			<!-- <span class="colorPicker" id="casque"><span class="colorPicker-name">essai</span></span> -->
-			<input type="color" name="casque" id="casque" value='#ff0000'>
+	<div id="simulateur"></div>
+	<div id="info" class="menu">
+		<span class="barreElement"></span>
+		<h2 class="colorPickerTitle" >Configurer</h2>
+		<div class="elementChoice">
+			<div class="arrow--left"><span class="left"></span></div>
+			<h3 class="elementPicker">Eléments</h3>	
+			<div class="arrow--right"><span class="right"></span></div>
+		</div>
+		 <div class="pickerVisor">
+			 <div class="pickerVisorDisplay">
+				<span class="pickerVisorWithout">Without</span>
+			 	<span class="pickerVisorWith">With</span>
+			</div>
+			<div class="pickerVisorColor">
+				<span class="pickerVisorColor--color"><span class="pickerVisorColor--name">Without</span></span>
+				<span class="pickerVisorColor--color"><span class="pickerVisorColor--name">Transparent</span></span>
+				<span class="pickerVisorColor--color"><span class="pickerVisorColor--name">smoked</span></span>
+				<span class="pickerVisorColor--color"><span class="pickerVisorColor--name">Black</span></span>
+			</div>
+			<!-- <input type="color" name="casque" id="casque" value='#ff0000'> -->
 		</div>
 	</div>
-	<div id="container"></div>
+
+	
   <script src="../src/index.js"></script>
 </body>
 </html>
