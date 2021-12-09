@@ -8,6 +8,7 @@ html {
 #root {
 	display: none;
 }
+
 body {
 	display: flex;
 	flex-direction: column;
@@ -148,7 +149,7 @@ body {
 	display: flex;
 }
 
-.pickerVisorDisplay {
+.pickerVisorDisplay,.pickerVisorColor {
 	display: flex;
 	color: #183679;
 	font-family: 'Montserrat', sans-serif;
@@ -164,7 +165,8 @@ body {
 	width: 50px;
 	text-align: center;
 	margin-right: 1rem;
-
+	color: #183679;
+	cursor: pointer;
 }
 
 .pickerVisorWith {
@@ -173,4 +175,16 @@ body {
 	border-radius: 25px;
 	width: 50px;
 	text-align: center;
+	color: #183679;
+	cursor: pointer;
+}
+.pickerVisorColor--transp, .pickerVisorColor--smoked,.pickerVisorColor--black {
+	border: 2px solid #183679;
+	padding: 0.2rem;
+	border-radius: 25px;
+	width: 100px;
+	text-align: center;
+	color: #183679;
+	cursor: pointer;
+	margin-right: 1rem;
 }
