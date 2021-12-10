@@ -82,7 +82,7 @@ body {
 	align-items: center;
 }
 .elementPicker {
-	width: 80px;
+	width: 200px;
 	margin: 0 2rem;
 	text-align: center;
 	color: #183679;
@@ -131,7 +131,7 @@ body {
 	}
 }
 
-.pickerVisor {
+.pickerVisor, .pickerShell, .pickerChinguard, .pickerScrew, .pickerRubber {
 	display: none;
 }
 
@@ -149,7 +149,8 @@ body {
 	display: flex;
 }
 
-.pickerVisorDisplay,.pickerVisorColor {
+.pickerVisorDisplay,.pickerVisorColor,.shellMaterial,.shellColor,
+.shellDesign,.pickerChinguardDisplay, .pickerChinguardColor {
 	display: flex;
 	color: #183679;
 	font-family: 'Montserrat', sans-serif;
@@ -158,7 +159,7 @@ body {
 	justify-content: center;
 	margin-top: 2rem;
 }
-.pickerVisorWithout {
+.pickerVisorWithout,.ChinguardWithout {
 	border: 2px solid #183679;
 	padding: 0.2rem 0.5rem;
 	border-radius: 25px;
@@ -169,7 +170,7 @@ body {
 	cursor: pointer;
 }
 
-.pickerVisorWith {
+.pickerVisorWith, .ChinguardWith {
 	border: 2px solid #183679;
 	padding: 0.2rem;
 	border-radius: 25px;
@@ -188,3 +189,81 @@ body {
 	cursor: pointer;
 	margin-right: 1rem;
 }
+
+.materialCarbon,
+.materialBrillant,
+.materialMatt,
+.materialGlitter {
+	padding: 0.2rem;
+	width: 20%;
+	border: 2px solid #183679;
+	border-radius:50%
+}
+.materialGlitter {
+	width: 40px;
+	height: 40px;
+
+}
+.materialBrillant {
+	filter: brightness(2);
+}
+.carbon,.brillant,.matt,.glitter  {
+	display: flex;
+	margin-right: 1rem;
+	cursor: pointer;
+	flex-direction: column;
+	width: 35%;
+	align-items: center;
+}
+
+.carbon--name,.brillant--name, .matt--name, .glitter--name {
+	width: 20%;
+	padding: 0.2rem;
+	text-align: center;
+}
+input[type="color"] {
+	-webkit-appearance: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+}
+
+.shellColor--blue,.shellColor--red,.shellColor--green,.shellColor--black,.shellColor--white,.shellColor--yellow,.shellColor--gold,.shellColor--silver, .chinguardColor--blue,.chinguardColor--red,.chinguardColor--green,.chinguardColor--black,.chinguardColor--white,.chinguardColor--yellow,.chinguardColor--gold,.chinguardColor--silver,.rubberColor--black,.rubberColor--white,.rubberColor--naturel {
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	padding: 0.2rem;
+	border: 2px solid #183679;
+}
+
+.shellColor, .pickerChinguardColor {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+
+.shellDesign  {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	cursor: pointer;
+
+	& > img {
+		padding: 0.4rem;
+		border: 2px solid #183679;
+		border-radius: 50%;
+		width: 60px;
+		height: 60px;
+		margin-right: 1rem;
+
+	}
+}
+

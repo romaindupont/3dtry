@@ -17,27 +17,50 @@
 		<h2 class="colorPickerTitle" >Configurer</h2>
 		<div class="elementChoice">
 			<div class="arrow--left"><span class="left"></span></div>
-			<h3 class="elementPicker">Eléments</h3>	
+			<h3 class="elementPicker">Elements</h3>	
 			<div class="arrow--right"><span class="right"></span></div>
 		</div>
-		 <div class="pickerVisor">
-			 <div class="pickerVisorDisplay">
+		<div class="pickerVisor">
+			<div class="pickerVisorDisplay">
 				<span class="pickerVisorWithout">Without</span>
-			 	<span class="pickerVisorWith">With</span>
+				<span class="pickerVisorWith">With</span>
 			</div>
 			<div class="pickerVisorColor">
 				<span class="pickerVisorColor--transp">Transparent</span>
 				<span class="pickerVisorColor--smoked">smoked</span>
 				<span class="pickerVisorColor--black">Black</span>
 			</div>
-			<!-- <input type="color" name="casque" id="casque" value='#ff0000'> -->
 		</div>
 		<div class="pickerShell">
 			<div class="shellMaterial">
-				<span class="materialCarbon"></span>
-				<span class="materialBrillant"></span>
-				<span class="materialMatt"></span>
-				<span class="materialGlitter"></span>
+				<div class="carbon"><img src="../src/assets/textures/carbonPreview.jpg" alt="carbonMaterial" class="materialCarbon"><span class="carbon--name">Carbon</span></div>
+				<div class="brillant"><img src="../src/assets/textures/MattPreview.jpg" alt="brillantMaterial" class="materialBrillant"><span class="brillant--name">Brillant</span></div>
+				<div class="matt"><img src="../src/assets/textures/MattPreview.jpg" alt="mattMaterial" class="materialMatt"><span class="matt--name">Matt</span></div>
+				<div class="glitter"><img src="../src/assets/textures/glitter.jpg" alt="glitterMaterial" class="materialGlitter"><span class="glitter--name">Glitter</span></div>
+			</div>
+			<div class="shellColor">
+				<input type="color" value="#5288ff" readOnly class="shellColor--blue">
+				<input type="color" value="#e72a2a" readOnly class="shellColor--red">
+				<input type="color" value="#26892e" readOnly class="shellColor--green">
+				<input type="color" value="#f4f74e" readOnly class="shellColor--yellow">
+				<input type="color" value="#000000" readOnly class="shellColor--black">
+				<input type="color" value="#ffffff" readOnly class="shellColor--white">
+				<input type="color" value="#FFD700" readOnly class="shellColor--gold">
+				<input type="color" value="#C0C0C0" readOnly class="shellColor--silver">
+			</div>
+			<div class="shellDesign">
+				<img class="shellDesign--normal" src="../src/assets/images/plain_shell.svg" alt="plainShell">
+				<img class="shellDesign--half" src="../src/assets/images/half_shell.svg" alt="halfShell">
+				<img class="shellDesign--band" src="../src/assets/images/plain_shell.svg" alt="bandShell">
+				<img class="shellDesign--vertical" src="../src/assets/images/vertical_shell.svg" alt="verticalShell">
+				<img class="shellDesign--horizontal" src="../src/assets/images/horizontal_shell.svg" alt="horizontalShell">
+				<img class="shellDesign--gradient" src="../src/assets/images/gradient_shell.svg" alt="gradientShell">
+				<img class="shellDesign--contour" src="../src/assets/images/band_shell.svg" alt="contourShell">
+				<img class="shellDesign--outline" src="../src/assets/images/outline_shell.svg" alt="outlineShell">
+				<img class="shellDesign--extend" src="../src/assets/images/extend_shell.svg" alt="extendShell">
+				<img class="shellDesign--checker" src="../src/assets/images/checker_shell.svg" alt="checkerShell">
+
+
 			</div>
 		</div>
 		<div class="pickerChinguard">
@@ -46,23 +69,30 @@
 			 	<span class="ChinguardWith">With</span>
 			</div>
 			<div class="pickerChinguardColor">
-				<span class="pickerChinguardColor--blue"></span>
-				<span class="pickerChinguardColor--red"></span>
-				<span class="pickerChinguardColor--green"></span>
-				<span class="pickerChinguardColor--yellow"></span>
-				<span class="pickerChinguardColor--black"></span>
-				<span class="pickerChinguardColor--white"></span>
-				<span class="pickerChinguardColor--gold"></span>
-				<span class="pickerChinguardColor--silver"></span>
+				<input type="color" value="#5288ff" readOnly class="chinguardColor--blue">
+				<input type="color" value="#e72a2a" readOnly class="chinguardColor--red">
+				<input type="color" value="#26892e" readOnly class="chinguardColor--green">
+				<input type="color" value="#f4f74e" readOnly class="chinguardColor--yellow">
+				<input type="color" value="#000000" readOnly class="chinguardColor--black">
+				<input type="color" value="#ffffff" readOnly class="chinguardColor--white">
+				<input type="color" value="#FFD700" readOnly class="chinguardColor--gold">
+				<input type="color" value="#C0C0C0" readOnly class="chinguardColor--silver">
 			</div>
 		</div>
 		<div class="pickerScrew">
-			<span class="screw--1"></span>
-			<span class="screw--2"></span>
+			<div class="shellDesign">
+				<img class="screw--all" src="../src/assets/images/rivet_all.svg" alt="plainShell">
+				<img class="screw--bottom" src="../src/assets/images/rivet_bottom.svg" alt="plainShell">
+				<img class="screw--top" src="../src/assets/images/rivet_top.svg" alt="plainShell">
+				<img class="screw--none" src="../src/assets/images/rivet_none.svg" alt="plainShell">
+			</div>
 		</div>
 		<div class="pickerRubber">
-			<span class="ruberColor--black"></span>
-			<span class="ruberColor--white"></span>
+			<div class="shellColor">
+				<input type="color" value="#000000" readOnly class="rubberColor--black" disabled>
+				<input type="color" value="#ffffff" readOnly class="rubberColor--white" disabled>
+				<input type="color" value="#5f6062" readOnly class="rubberColor--naturel" disabled>
+			</div>
 		</div>
 	 </div>
 	</div>
