@@ -1,17 +1,11 @@
 import './styles/main.scss';
 /* import { menu, menu1, triangle } from './js/menu.js'; */
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 
-/* const heading = document.createElement('h1');
-heading.textContent = 'Essai'; */
 const menuOpen = () => {
 	const menuClick = document.querySelector('.barreElement');
 	menuClick.addEventListener('click', () => {
@@ -125,13 +119,12 @@ const veldt = () => {
 
   renderer.outputEncoding = THREE.RGBDEncoding;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  /* renderer.toneMappingExposure = 0.85; */
   container.appendChild(renderer.domElement);
 	THREE.Object3D.DefaultUp = new THREE.Vector3( 0, 0, 1 );
   const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1500);
 	
 	camera.position.set(50, -800, 100 );
-
+	camera.lookAt(0, 0, 1)
   const controls = new OrbitControls(camera, container);
   controls.target.set(50, 0, 0);
   controls.minDistance = 100;
@@ -142,9 +135,8 @@ const veldt = () => {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf4f7f7);
   scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
-	const directionalLight = new THREE.DirectionalLight( 0x404040, 2);
+	const directionalLight = new THREE.DirectionalLight( 0x404040, 3);
 	directionalLight.position.set(0, 1, 0);
-	
 	scene.add( directionalLight );
 	const textureBody = new THREE.TextureLoader();
 	const svgLoad = new SVGLoader();
@@ -502,6 +494,8 @@ const veldt = () => {
 	const shellDesignChecker = document.querySelector('.shellDesign--checker');
 	shellDesignChecker.addEventListener('click', () => {
 		bodyMaterial.map = checkerTexture;
+		/* bodyMaterial.toneMapped = THREE.ReinhardToneMapping; */
+		/* bodyMaterial.depthTest = false; */
 		/* numberSvg.visible = true;
 		numberSvg.rotation.z = 2 */
  		/* bodyMaterial.map=numberSvg */
@@ -604,6 +598,8 @@ const veldt = () => {
 		*/
 		carModel.rotation.z += 1
     scene.add(carModel);
+		rotateObject(carModel)
+		/* animate() */
   },
 
   function (xhr) {
@@ -614,12 +610,21 @@ const veldt = () => {
     console.log('An error happened = ', error);
   }
 );
-
-	function render() {
-    renderer.render(scene, camera); }
-
+function rotateObject(carModel) {
+	setInterval(()=>carModel.rotation.z += 0.01, 100)	
+	animate()
 }
+	function animate() {
+		requestAnimationFrame( animate );
+		render();
+	}
+	function render() {
+
+    renderer.render(scene, camera);
+	}
+}
+
 
 // Append heading node to the DOM
 const app = document.querySelector('#root')
-app.append(/* heading, */ veldt(),menuOpen(),menuElement()/* ,VisorPicker() */)
+app.append(veldt(),menuOpen(),menuElement())

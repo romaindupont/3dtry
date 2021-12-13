@@ -42,6 +42,7 @@
   "dependencies": {
     "@babel/core": "^7.14.3",
     "@gltf-transform/cli": "^1.2.3",
+    "@tweenjs/tween.js": "^18",
     "gltf-pipeline": "^3.0.4",
     "lodash": "^4.17.21",
     "three": "^0.135.0"
