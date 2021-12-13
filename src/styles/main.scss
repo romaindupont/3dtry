@@ -5,10 +5,265 @@ html {
   font-size: $font-size;
   color: $font-color;
 }
-.triangle1 {
-  display: inline-block;
-  height: 0;
-  width: 0;
-  border-bottom: 150px solid green;
-  border-left: 67px solid transparent;
+#root {
+	display: none;
 }
+
+body {
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	height: 100vh;
+	overflow-x: hidden;
+	margin: 0;
+	position: relative;
+}
+#simulateur {
+	width: 100vw;
+	height: 90%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+
+/* canvas {
+	display: block;
+	width: 100%;
+	height: 50%;
+/* 	@media (min-width: 375px) {
+		display: block;
+		width: 690px;
+		height: 800px;
+	}
+	@media (min-width: 992px) {
+		display: block;
+		width: 700px;
+		height: 975px;
+	} */
+
+
+.menu {
+	width: 100vw;
+	height: 500px;
+	z-index: 1;
+	background-color: white;
+	/* top: -100px; */
+	border-radius: 15px;
+	position: absolute;
+	top: 85%;
+
+}
+
+.barreElement {
+	display: block;
+	background-color: rgb(179, 176, 176);
+	margin: 5px auto;
+	width: 100px;
+	height: 5px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.menu--open {
+	top: 50%;
+}
+
+.colorPickerTitle {
+	text-align: center;
+	font-family: 'Montserrat', sans-serif;
+	text-transform: uppercase;
+	display: block;
+	color: #183679;
+}
+.elementChoice {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.elementPicker {
+	width: 200px;
+	margin: 0 2rem;
+	text-align: center;
+	color: #183679;
+	font-family: 'Montserrat', sans-serif;
+	text-transform:capitalize;
+}
+.left {
+	width: 20px;
+	height: 2px;
+	background: #183679;
+	display: block;
+	cursor: pointer;
+	margin: auto;
+	position: relative;
+	transform: rotate(-45deg);
+	&::after {
+		content: '';
+		width: 20px;
+		height: 2px;
+		background: #183679;
+		display: block;
+		cursor: pointer;
+		margin: auto;
+		transform: translate(-10px, 10px) rotate(90deg);
+	}
+}
+
+.right {
+	width: 20px;
+	height: 2px;
+	background: #183679;
+	display: block;
+	cursor: pointer;
+	margin: auto;
+	transform: rotate(45deg);
+	position: relative;
+	&::after {
+		content: '';
+		width: 20px;
+		height: 2px;
+		background: #183679;
+		display: block;
+		cursor: pointer;
+		margin: auto;
+		transform: translate(10px, 10px) rotate(-90deg);
+	}
+}
+
+.pickerVisor, .pickerShell, .pickerChinguard, .pickerScrew, .pickerRubber {
+	display: none;
+}
+
+.arrow--left {
+	cursor: pointer;
+	width: 50px;
+	height: 68px;
+	display: flex;
+}
+
+.arrow--right {
+	cursor: pointer;
+	width: 50px;
+	height: 68px;
+	display: flex;
+}
+
+.pickerVisorDisplay,.pickerVisorColor,.shellMaterial,.shellColor,
+.shellDesign,.pickerChinguardDisplay, .pickerChinguardColor {
+	display: flex;
+	color: #183679;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 900;
+	font-size: 0.7rem;
+	justify-content: center;
+	margin-top: 2rem;
+}
+.pickerVisorWithout,.ChinguardWithout {
+	border: 2px solid #183679;
+	padding: 0.2rem 0.5rem;
+	border-radius: 25px;
+	width: 50px;
+	text-align: center;
+	margin-right: 1rem;
+	color: #183679;
+	cursor: pointer;
+}
+
+.pickerVisorWith, .ChinguardWith {
+	border: 2px solid #183679;
+	padding: 0.2rem;
+	border-radius: 25px;
+	width: 50px;
+	text-align: center;
+	color: #183679;
+	cursor: pointer;
+}
+.pickerVisorColor--transp, .pickerVisorColor--smoked,.pickerVisorColor--black {
+	border: 2px solid #183679;
+	padding: 0.2rem;
+	border-radius: 25px;
+	width: 100px;
+	text-align: center;
+	color: #183679;
+	cursor: pointer;
+	margin-right: 1rem;
+}
+
+.materialCarbon,
+.materialBrillant,
+.materialMatt,
+.materialGlitter {
+	padding: 0.2rem;
+	width: 20%;
+	border: 2px solid #183679;
+	border-radius:50%
+}
+.materialGlitter {
+	width: 40px;
+	height: 40px;
+
+}
+.materialBrillant {
+	filter: brightness(2);
+}
+.carbon,.brillant,.matt,.glitter  {
+	display: flex;
+	margin-right: 1rem;
+	cursor: pointer;
+	flex-direction: column;
+	width: 35%;
+	align-items: center;
+}
+
+.carbon--name,.brillant--name, .matt--name, .glitter--name {
+	width: 20%;
+	padding: 0.2rem;
+	text-align: center;
+}
+input[type="color"] {
+	-webkit-appearance: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+}
+
+.shellColor--blue,.shellColor--red,.shellColor--green,.shellColor--black,.shellColor--white,.shellColor--yellow,.shellColor--gold,.shellColor--silver, .chinguardColor--blue,.chinguardColor--red,.chinguardColor--green,.chinguardColor--black,.chinguardColor--white,.chinguardColor--yellow,.chinguardColor--gold,.chinguardColor--silver,.rubberColor--black,.rubberColor--white,.rubberColor--naturel {
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	padding: 0.2rem;
+	border: 2px solid #183679;
+}
+
+.shellColor, .pickerChinguardColor {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+
+.shellDesign  {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	cursor: pointer;
+
+	& > img {
+		padding: 0.4rem;
+		border: 2px solid #183679;
+		border-radius: 50%;
+		width: 60px;
+		height: 60px;
+		margin-right: 1rem;
+
+	}
+}
+
