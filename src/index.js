@@ -189,24 +189,20 @@ const veldt = () => {
 	const screwMetalness = textureBody.load('../src/assets/textures/metalVis/Metal011_1K_Metalness.jpg')
 	const screwNormalDX = textureBody.load('../src/assets/textures/metalVis/Metal011_1K_NormalDX.jpg')
 	const screwRoughness = textureBody.load('../src/assets/textures/metalVis/Metal011_1K_Roughness.jpg')
-	const racing = textureBody.load('../src/assets/images/number.png', function (map) {
-		/* map.wrapS = THREE.RepeatWrapping;
-		map.wrapT = THREE.RepeatWrapping; */
-		/* map.offset(0.5) */
-		/* map.anisotropy = 24; */
-		/* map.mapping.set(10); */
-		map.repeat.set(2, 1);
-		/* map.wrapT = 2 */
-		/* map.magFilter = 2 */
-    /* map.anisotropy = 1;
 
-    map.repeat.set(1, 1); */
-		/* map.rotation(90) */
+		
+	const checkerTexture = textureBody.load('../src/assets/images/checker.png', function (map) {
+		map.repeat.set(1, 1);
+		/* map.center.set(0.5, 0.5); */
 	
 	
 	})
-		
+	const halfTexture = textureBody.load('../src/assets/images/halfTry.png', function (map) {
+		map.repeat.set(1, 1);
+		/* map.center.set(0.5, 0.5); */
 	
+	
+	})
 	
 	/* const racing = svgLoad.load('../src/assets/images/racing.svg', function (map) {
 		const paths = map.paths;
@@ -236,9 +232,17 @@ const veldt = () => {
 	const chainguardMaterial = new THREE.MeshPhysicalMaterial({
 		color: 0x183679 , metalness: 0.6, roughness: 0.5, clearcoat: 0.6, clearcoatRoughness: 0.16, transparent: false, side: THREE.DoubleSide, reflectivity: 0.148
 	});
-	const screwMaterial = new THREE.MeshPhysicalMaterial({
+	const screwMaterialTop = new THREE.MeshPhysicalMaterial({
 		 side: THREE.DoubleSide, map:ScrewBaseColor,displacementMap:screwDiplacement,roughnessMap:screwRoughness,metalnessMap:screwMetalness, normalMap:screwNormalDX
 	});
+
+	const screwMaterialDown1 = new THREE.MeshPhysicalMaterial({
+		side: THREE.DoubleSide, map:ScrewBaseColor,displacementMap:screwDiplacement,roughnessMap:screwRoughness,metalnessMap:screwMetalness, normalMap:screwNormalDX
+ });
+ const screwMaterialDown2 = new THREE.MeshPhysicalMaterial({
+	side: THREE.DoubleSide, map:ScrewBaseColor,displacementMap:screwDiplacement,roughnessMap:screwRoughness,metalnessMap:screwMetalness, normalMap:screwNormalDX
+});
+
 	const rubberMaterial = new THREE.MeshPhysicalMaterial({
 		color: 0x222222 ,side: THREE.DoubleSide, reflectivity: 0, map:rubberMap, roughnessMap:rubberRoughness,roughness:0.5, normalMap: rubberNormal, metalnessMap: rubberMetalness, metalness: 0.9
 	});
@@ -484,6 +488,10 @@ const veldt = () => {
 
 	const shellDesignNormal = document.querySelector('.shellDesign--normal');
 	const shellDesignHalf = document.querySelector('.shellDesign--half');
+	shellDesignHalf.addEventListener('click', () => {
+		bodyMaterial.map = halfTexture;
+
+  })
 	const shellDesignBand = document.querySelector('.shellDesign--band');
 	const shellDesignVertical = document.querySelector('.shellDesign--vertical');
 	const shellDesignHorizontal = document.querySelector('.shellDesign--horizontal');
@@ -493,7 +501,7 @@ const veldt = () => {
 	const shellDesignExtend = document.querySelector('.shellDesign--extend');
 	const shellDesignChecker = document.querySelector('.shellDesign--checker');
 	shellDesignChecker.addEventListener('click', () => {
-		bodyMaterial.map = racing;
+		bodyMaterial.map = checkerTexture;
 		/* numberSvg.visible = true;
 		numberSvg.rotation.z = 2 */
  		/* bodyMaterial.map=numberSvg */
@@ -505,32 +513,36 @@ const veldt = () => {
 
 	const screwAll = document.querySelector('.screw--all');
 	screwAll.addEventListener('click', () => {
-		screwMaterial.visible = true;
+		screwMaterialDown1.visible = true;
+		screwMaterialTop.visible = true;
+		screwMaterialDown2.visible = true;
   })
 	const screwBott = document.querySelector('.screw--bottom');
-	screwBott.addEventListener('click', () => {
-		screwMaterial.visible = true;
+	screwBott.addEventListener('click', (e) => {
+		screwMaterialDown1.visible = true;
+		screwMaterialTop.visible = false;
+		screwMaterialDown2.visible = true;
   })
 	const screwTop = document.querySelector('.screw--top');
 	screwTop.addEventListener('click', () => {
-		screwMaterial.visible = true;
+		screwMaterialTop.visible = true;
+		screwMaterialDown2.visible = false;
+		screwMaterialDown1.visible = false;
   })
 	const screwNone = document.querySelector('.screw--none');
 	screwNone.addEventListener('click', () => {
-		screwMaterial.visible = false;
+		screwMaterialDown2.visible = false;
+		screwMaterialTop.visible = false;
+		screwMaterialDown1.visible = false;
   })
 
 	const rubberColorBlack = document.querySelector('.rubberColor--black');
 	rubberColorBlack.addEventListener('click', () => {
 		rubberMaterial.color.set('#222222');
   })
-	const rubberColorWhite = document.querySelector('.rubberColor--white');
-	rubberColorWhite.addEventListener('click', () => {
-		rubberMaterial.color.set('#ffffff');
-  })
 	const rubberColorNaturel = document.querySelector('.rubberColor--naturel');
 	rubberColorNaturel.addEventListener('click', () => {
-		rubberMaterial.color.set(null);
+		rubberMaterial.color.set('#ffffff');
   })
 
 	const loader = new Rhino3dmLoader();
@@ -555,28 +567,32 @@ const veldt = () => {
 		carModel.children[3].material = rubberChinguardMaterial;//rubber chainguard bas
 		carModel.children[13].material = rubberMaterial;//rubber shell
 		//screw
-		carModel.children[1].material = screwMaterial;//vis gauche visior
-		carModel.children[14].material = screwMaterial;//vis droit visior
-		carModel.children[29].material = screwMaterial;//rondelle haut droit
-		carModel.children[15].material = screwMaterial;//vis haut casque
-		carModel.children[16].material = screwMaterial;//vis centre casque
-		carModel.children[30].material = screwMaterial;//rondelle haut centre
-		carModel.children[17].material = screwMaterial;//vis gauche casque
-		carModel.children[28].material = screwMaterial;//rondelle haut gauche
-		carModel.children[21].material = screwMaterial;//vis gauche chainguard
-		carModel.children[22].material = screwMaterial;//vis gauche chainguard
-		carModel.children[27].material = screwMaterial;//rondelle gauche chainguard
-		carModel.children[23].material = screwMaterial;//vis droit chainguard
-		carModel.children[24].material = screwMaterial;//vis droit chainguard
-		carModel.children[26].material = screwMaterial;//rondelle droit chainguard
-		carModel.children[31].material = screwMaterial;//rondelle bas chainguard gauche
-		carModel.children[32].material = screwMaterial;//rondelle bas chainguard droit
-		carModel.children[35].material = screwMaterial;//rondelle bas droit
-		carModel.children[36].material = screwMaterial;//rondelle bas droit
-		carModel.children[37].material = screwMaterial;//rondelle bas gauche
-		carModel.children[38].material = screwMaterial;//rondelle bas gauche
+		carModel.children[1].material = screwMaterialTop;//vis gauche visior
+		carModel.children[14].material = screwMaterialTop;//vis droit visior
+		carModel.children[29].material = screwMaterialTop;//rondelle haut droit
+		carModel.children[15].material = screwMaterialTop;//vis haut casque
+		carModel.children[16].material = screwMaterialTop;//vis centre casque
+		carModel.children[30].material = screwMaterialTop;//rondelle haut centre
+		carModel.children[17].material = screwMaterialTop;//vis gauche casque
+		carModel.children[28].material = screwMaterialTop;//rondelle haut gauche
+		carModel.children[21].material = screwMaterialDown1;//vis gauche chainguard
+		carModel.children[22].material = screwMaterialDown2;//vis gauche chainguard
+		carModel.children[27].material = screwMaterialDown1;//rondelle gauche chainguard
+		carModel.children[23].material = screwMaterialDown1;//vis droit chainguard
+		carModel.children[24].material = screwMaterialDown2;//vis droit chainguard
+		carModel.children[26].material = screwMaterialDown2;//rondelle droit chainguard
+		carModel.children[31].material = screwMaterialDown1;//rondelle bas chainguard gauche
+		carModel.children[32].material = screwMaterialDown1;//rondelle bas chainguard droit
+		carModel.children[35].material = screwMaterialDown1;//rondelle bas droit
+		carModel.children[36].material = screwMaterialDown2;//rondelle bas droit
+		carModel.children[37].material = screwMaterialDown1;//rondelle bas gauche
+		carModel.children[38].material = screwMaterialDown2;//rondelle bas gauche
 		//Logo
-		carModel.children[12].material = LogoVeldt;
+		carModel.children[12].material = LogoVeldt;	
+		carModel.children[10].material = screwMaterialTop;//trou gauche visiere
+		carModel.children[11].material = screwMaterialTop;//trou gauche visiere
+		carModel.children[19].visible = false;
+		carModel.children[20].visible = false;
 		/* 
 		carModel.children[5].visible = false;//
 		carModel.children[6].visible = false;//
