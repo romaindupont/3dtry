@@ -5,6 +5,7 @@ import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
+import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 
 const menuOpen = () => {
 	const menuClick = document.querySelector('.barreElement');
@@ -110,6 +111,7 @@ const VisorPicker = () => {
 	
 }
 const veldt = () => {
+	let effectController;
 	const container = document.getElementById('simulateur');
 	const renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -135,7 +137,7 @@ const veldt = () => {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf4f7f7);
   scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
-	const directionalLight = new THREE.DirectionalLight( 0x404040, 3);
+	const directionalLight = new THREE.DirectionalLight( 0x0c0c0c, 3);
 	directionalLight.position.set(0, 1, 0);
 	scene.add( directionalLight );
 	const textureBody = new THREE.TextureLoader();
@@ -181,7 +183,18 @@ const veldt = () => {
 	const screwMetalness = textureBody.load('../src/assets/textures/metalVis/Metal011_1K_Metalness.jpg')
 	const screwNormalDX = textureBody.load('../src/assets/textures/metalVis/Metal011_1K_NormalDX.jpg')
 	const screwRoughness = textureBody.load('../src/assets/textures/metalVis/Metal011_1K_Roughness.jpg')
-
+	const carbonTryMap = textureBody.load('../src/assets/textures/carbon/Carbon.png', function (map) {
+		map.encoding = THREE.sRGBEncoding;
+		map.wrapS = THREE.RepeatWrapping;
+    map.wrapT = THREE.RepeatWrapping;
+		map.repeat.set(60, 30);
+		map.rotation = 360;
+		map.center.set(-0.2,-0.2)
+  });
+	const carbonNormalMap = textureBody.load('../src/assets/textures/carbon/Carbon_Normal.png', function (map) {
+		map.wrapS = THREE.RepeatWrapping;
+		map.wrapT = THREE.RepeatWrapping;
+  });
 		
 	const checkerTexture = textureBody.load('../src/assets/images/checker.png', function (map) {
 		map.repeat.set(1, 1);
@@ -242,13 +255,23 @@ const veldt = () => {
 		color: 0x222222 ,side: THREE.DoubleSide, reflectivity: 0, map:rubberMap, roughnessMap:rubberRoughness,roughness:0.5, normalMap: rubberNormal, metalnessMap: rubberMetalness, metalness: 0.9
 	});
 	const bodyMaterial = new THREE.MeshPhysicalMaterial({
-		clearcoat: 0.3, clearcoatRoughness: 0.6, side: THREE.DoubleSide, map:carbonBaseColor, bumpMap:carbonBump, normalMap:carbonNormal, roughnessMap:carbonRouhness, displacementMap:carbonHeight, clearcoatMap:carbonanistroAngle , clearcoatNormalMap:carbonanistroLevel, ior:3
+		/* clearcoat: 0.3, clearcoatRoughness: 0.6, */ side: THREE.DoubleSide,/* , map:carbonBaseColor, bumpMap:carbonBump, normalMap:carbonNormal, roughnessMap:carbonRouhness, displacementMap:carbonHeight, clearcoatMap:carbonanistroAngle , 
+		clearcoatNormalMap:carbonanistroLevel, ior:3 */
+		color: 0xffffff,
+		metalness: 0.2,
+		roughness: 0.5,
+		clearcoat: 0.3,
+		clearcoatRoughness: 0.1,
+		map: carbonTryMap,
+		normalMap: carbonNormalMap,
+		ior:1.39,
+		lightMapIntensity: 1
 	});
 	const AttachVisor = new THREE.MeshPhysicalMaterial({
 		color: 0x222222, side: THREE.DoubleSide, metalness: 0.6, roughness: 0.5, clearcoat: 0.6, clearcoatRoughness: 0.16, reflectivity: 0.148
 	})
 	const LogoVeldt = new THREE.MeshPhysicalMaterial({
-		color: 0xffffff, side: THREE.DoubleSide, metalness: 0.6, roughness: 0.5, clearcoat: 0.6, clearcoatRoughness: 0.16, reflectivity: 0.148
+		color: 0xcccccc, side: THREE.DoubleSide, metalness: 0.6, roughness: 0.5, clearcoat: 0.6, clearcoatRoughness: 0.16, reflectivity: 0.148
 	})
 /* 	const Racing = new THREE.MeshPhysicalMaterial({
 		 side: THREE.DoubleSide, map:numberSvg
@@ -599,7 +622,7 @@ const veldt = () => {
 		carModel.rotation.z += 1
     scene.add(carModel);
 		rotateObject(carModel)
-		/* animate() */
+		
   },
 
   function (xhr) {
@@ -610,15 +633,112 @@ const veldt = () => {
     console.log('An error happened = ', error);
   }
 );
+function setupGui() {
+	effectController = {
+
+		/* color: 0xffffff, */
+		metalness: 0.2,
+		roughness: 0.5,
+		clearcoat: 0.3,
+		clearcoatRoughness: 0.1,
+		ior: 1.39,
+		lightMapIntensity: 1,
+		reflectivity: 0.5,
+		sheen: 0.0,
+		sheenRoughness: 1.0,
+		sheenColor:'#ffffff',
+		transmission: 0.0,
+		alphaTest: 0.0,
+		opacity: 1.0,
+		bumpScale: 1.0,
+		emissive:'#000000',
+		anistropy: 0,
+		magFilter: 0,
+		minFilter: 0,
+		repeatx: 60,
+		repeaty: 30,
+		rotation: 360,
+		centerx: -0.2,
+		centery: -0.2,
+		blendDst : THREE.OneMinusSrcAlphaFactor,
+	};
+/* 	let arrayBlendDst = [
+		THREE.ZeroFactor,
+		THREE.OneFactor,
+		THREE.SrcColorFactor,
+	] */
+	let h;
+	let b;
+	const gui = new GUI();
+	
+	h = gui.addFolder( 'Material shell control' );
+	h.add( effectController, 'metalness', 0.0, 1.0, 0.05 ).name( 'metalness' ).onChange( render );
+	h.add( effectController, 'roughness', 0.0, 1.0, 0.025 ).name( 'roughness' ).onChange( render );
+	h.add( effectController, 'clearcoat', 0.0, 1.0, 0.025 ).name( 'clearcoat' ).onChange( render );
+	h.add( effectController, 'clearcoatRoughness', 0.0, 1.0, 0.025 ).name( 'clearcoatRoughness' ).onChange( render );
+	h.add( effectController, 'ior', 1.0, 2.333, 0.025 ).name( 'ior' ).onChange( render );
+	h.add( effectController, 'lightMapIntensity', 0.0, 1000, 10 ).name( 'lightMapIntensity' ).onChange( render );
+	h.add( effectController, 'reflectivity', 0.0, 1.0, 0.025 ).name( 'reflectivity' ).onChange( render );
+	h.addColor(effectController, 'sheenColor').onChange( render )
+	h.add( effectController, 'sheen', 0.0, 1.0, 0.025 ).name( 'sheen' ).onChange( render );
+	h.add( effectController, 'sheenRoughness', 0.0, 1.0, 0.025 ).name( 'sheenRoughness' ).onChange( render );
+	h.add( effectController, 'transmission', 0.0, 1.0, 0.025 ).name( 'transmission' ).onChange( render );
+	h.add( effectController, 'alphaTest', 0.0, 1.0, 0.025 ).name( 'alphaTest' ).onChange( render );
+	h.add( effectController, 'opacity', 0.0, 1.0, 0.025 ).name( 'opacity' ).onChange( render );
+	h.add( effectController, 'bumpScale', 0.0, 1.0, 0.025 ).name( 'bumpScale' ).onChange( render );
+	/* h.add( effectController, 'color', 0.0, 1.0, 0.025 ).name( 'color' ).onChange( render ); */
+	h.addColor( effectController, 'emissive').onChange( render );
+	h.add( effectController, 'anistropy', 0, 100, 1 ).name( 'anistropy' ).onChange( render );
+	h.add( effectController, 'magFilter', 0.0, 1.0, 0.025 ).name( 'magFilter' ).onChange( render );
+	h.add( effectController, 'minFilter', 0.0, 1.0, 0.025 ).name( 'minFilter' ).onChange( render );
+	h.add( effectController, 'repeatx', 0.0, 1.0, 0.025 ).name( 'repeatx' ).onChange( render );
+	h.add( effectController, 'repeaty', 0.0, 1.0, 0.025 ).name( 'repeaty' ).onChange( render );
+	h.add( effectController, 'rotation', 0, 360, 1 ).name( 'rotation' ).onChange( render );
+	h.add( effectController, 'centerx', 0.0, 1.0, 0.025 ).name( 'centerx' ).onChange( render );
+	h.add( effectController, 'centery', 0.0, 1.0, 0.025 ).name( 'centery' ).onChange( render );
+	b = gui.addFolder( 'Light control' );
+	b.add( effectController,'blendDst', [ 'THREE.OneMinusSrcAlphaFactor', 'THREE.ZeroFactor', 'THREE.OneFactor', 'THREE.SrcColorFactor', 'THREE.OneMinusSrcColorFactor', 'THREE.SrcAlphaFactor', 'THREE.DstAlphaFactor', 'THREE.OneMinusDstAlphaFactor', 'THREE.DstColorFactor', 'THREE.OneMinusDstColorFactor', 'THREE.SrcAlphaSaturateFactor']).onChange( render ); 
+}
 function rotateObject(carModel) {
-	setInterval(()=>carModel.rotation.z += 0.01, 100)	
+	setInterval(()=>carModel.rotation.z += 0.001, 10)	
+	setupGui();
 	animate()
 }
 	function animate() {
 		requestAnimationFrame( animate );
+		
 		render();
 	}
 	function render() {
+		//Material shell control
+		bodyMaterial.metalness = effectController.metalness;
+		bodyMaterial.roughness = effectController.roughness;
+		bodyMaterial.clearcoat = effectController.clearcoat;
+		bodyMaterial.clearcoatRoughness = effectController.clearcoatRoughness;
+		bodyMaterial.ior = effectController.ior;
+		bodyMaterial.lightMapIntensity = effectController.lightMapIntensity;
+		bodyMaterial.reflectivity = effectController.reflectivity;
+		bodyMaterial.sheen = effectController.sheen;
+		bodyMaterial.sheenRoughness = effectController.sheenRoughness;
+		bodyMaterial.sheenColor.set(effectController.sheenColor);
+		bodyMaterial.transmission = effectController.transmission;
+		bodyMaterial.alphaTest = effectController.alphaTest;
+		bodyMaterial.opacity = effectController.opacity;
+		bodyMaterial.bumpScale = effectController.bumpScale;
+  	bodyMaterial.emissive.set(effectController.emissive);
+		bodyMaterial.map.anistropy = effectController.anistropy;
+		bodyMaterial.magFilter = effectController.magFilter;
+		bodyMaterial.minFilter = effectController.minFilter; 
+		bodyMaterial.rotation = effectController.rotation; 
+		console.log(effectController.blendDst)
+		bodyMaterial.map.repeat.x = effectController.repeatx;
+		bodyMaterial.map.repeat.y = effectController.repeaty;
+		bodyMaterial.map.center.x = effectController.centerx;
+		bodyMaterial.map.center.y = effectController.centery;
+		bodyMaterial.blendDst = effectController.blendDst
+		/* bodyMaterial.repeat.set(effectController.repeatx, effectController.repeaty); */
+		/* bodyMaterial.rotation = effectController.rotation; */
+		/* bodyMaterial.center.set(effectController.centerx, effectController.centery); */
 
     renderer.render(scene, camera);
 	}
