@@ -6,6 +6,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import { Vector2 } from 'three';
+import { Fog } from 'three';
 
 const menuOpen = () => {
 	const menuClick = document.querySelector('.barreElement');
@@ -112,13 +114,20 @@ const VisorPicker = () => {
 }
 const veldt = () => {
 	let effectController;
+	let sceneController;
+	let ambientLightController;
+	let directionalLightController;
+	let hemisphereLightController;
+	let LightController;
+	let pointLightController;
+	let rectAreaLightLightController;
+	let spotLightController;
+
 	const container = document.getElementById('simulateur');
 	const renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
   renderer.setAnimationLoop(render);
-
   renderer.outputEncoding = THREE.RGBDEncoding;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
@@ -137,9 +146,20 @@ const veldt = () => {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf4f7f7);
   scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
+	
 	const directionalLight = new THREE.DirectionalLight( 0x0c0c0c, 3);
 	directionalLight.position.set(0, 1, 0);
 	scene.add( directionalLight );
+	const ambientLight = new THREE.AmbientLight(null, 0);
+	const hemisphereLight = new THREE.HemisphereLight(null,null,0);
+	const Light = new THREE.Light();
+
+	const PointLight = new THREE.PointLight(null, 0, 0);
+	const RectAreaLight = new THREE.RectAreaLight(null, 0,0,0,0);
+	const SpotLight = new THREE.SpotLight(null, 0, 0, Math.PI/3, 0.0, 0);
+	scene.add( ambientLight,hemisphereLight,Light,PointLight,	RectAreaLight, SpotLight );
+
+
 	const textureBody = new THREE.TextureLoader();
 	const svgLoad = new SVGLoader();
 	const carbonBaseColor = textureBody.load('../src/assets/textures/carbon_fibers_basecolor_1k.jpg', function (map) {
@@ -634,9 +654,17 @@ const veldt = () => {
   }
 );
 function setupGui() {
+	sceneController = {
+		sceneBg: '#f4f7f7',
+		fog: null,
+		fogColor: '#FFFFFF',
+		fogNear: 0,
+		fogFar: 2500,
+		environment: null,
+		fogYN: false,
+	};
 	effectController = {
-
-		/* color: 0xffffff, */
+		color: 0xffffff,
 		metalness: 0.2,
 		roughness: 0.5,
 		clearcoat: 0.3,
@@ -652,26 +680,212 @@ function setupGui() {
 		opacity: 1.0,
 		bumpScale: 1.0,
 		emissive:'#000000',
-		anistropy: 0,
-		magFilter: 0,
-		minFilter: 0,
+		blendDst : THREE.OneMinusSrcAlphaFactor,
+		blendEquation: THREE.AddEquation,
+		blendSrc:THREE.SrcAlphaFactor,
+		blending: THREE.NormalBlending,
+		clipIntersection: false,
+		clipShadows: false,
+		clippingPlanes: [],
+		colorWrite: true,
+		depthTest: true,
+		depthWrite: true,
+		depthFunc: THREE.LessEqualDepth,
+		format: THREE.RGBAFormat,
+		stencilWrite: false,
+		stencilWriteMask: 0xFF,
+		stencilFunc: THREE.AlwaysStencilFunc,
+		stencilRef: 0,
+		stencilFuncMask: 0xFF,
+		stencilFail: THREE.KeepStencilOp,
+		stencilZFail: THREE.KeepStencilOp,
+		stencilZPass: THREE.KeepStencilOp,
+		fog: true,
+		polygonOffset: false,
+		polygonOffsetFactor: 0,
+		polygonOffsetUnits: 0,
+		precision: null,
+		premultipliedAlpha: false,
+		dithering: false,
+		shadowSide: null,
+		side: THREE.DoubleSide,
+		toneMapped: true,
+		transparent: false,
+		wrapS: THREE.ClampToEdgeWrapping,
+		wrapT: THREE.ClampToEdgeWrapping,
+		mapping: THREE.UVMapping,
+		magFilter: THREE.LinearFilter,
+		minFilter: THREE.LinearFilter,
+		type: THREE.UnsignedByteType,
+		offsetx: 0,
+		offsety: 0,
+		formatMap: THREE.RGBAFormat,
+		anisotropy: 0,
 		repeatx: 60,
 		repeaty: 30,
 		rotation: 360,
 		centerx: -0.2,
 		centery: -0.2,
-		blendDst : THREE.OneMinusSrcAlphaFactor,
+		generateMipmaps: true,
+		premultiplyAlpha: false,
+		flipY: true,
+		unpackAlignment: 4,
+		encoding: THREE.LinearEncoding,
+		clearcoatMap: null,
+		clearcoatNormalMap: null,
+		clearcoatNormalScaleX: 1,
+		clearcoatNormalScaleY: 1,
+		clearcoatRoughnessMap: null,
+		sheenColorMap: null,
+		transmissionMap: null,
+		alphaMap: null,
+		aoMap: null,
+		aoMapIntensity: 1,
+		bumMap: null,
+		sheenRoughnessMap: null,
+		displacementMap: null,
+		displacementScale: 1,
+		displacementBias: 0,
+		emissiveMap: null,
+		emissiveIntensity: 1,
+		envMap: null,
+		envMapIntensity: 0,
+		flatShading: false,
+		lightMap: null,
+		map: null,
+		metalnessMap: null,
+		normalMap: null,
+		normalMapType: THREE.TangentSpaceNormalMap,
+		normalScaleX: 1,
+		normalScaleY: 1,
+		refractionRatio: 0.98,
+		roughnessMap: null,
+		wireframe: false,
+		wireframeLinecap: 'round',
+		wireframeLinejoin: 'round',
+		wireframeLinewidth: 1,
 	};
-/* 	let arrayBlendDst = [
-		THREE.ZeroFactor,
-		THREE.OneFactor,
-		THREE.SrcColorFactor,
-	] */
+	ambientLightController = {
+		color: 0xffffff,
+		intensity: 0,
+		openclose: false,
+	};
+	directionalLightController = {
+		color: '#0c0c0c',
+		intensity: 3,
+		castShadow: false,
+		positionX: 0,
+		positionY: 1,
+		positionZ: 0,
+		targetX: 0,
+		targetY: 0,
+		targetZ: 0,
+		openclose: true,
+	};
+	hemisphereLightController = {
+		skyColor: 0xffffff,
+		groundColor: 0xffffff,
+		intensity: 0,
+		positionX: 0,
+		positionY: 1,
+		positionZ: 0,
+		openclose: false,
+	};
+	LightController = {
+		color: 0xffffff,
+		intensity: 0,
+		openclose: false,
+	};
+	pointLightController = {
+		color: 0xffffff,
+		intensity: 0,
+		distance:0.0,
+		decay:0,
+		power: 0,
+		openclose: false,
+
+	};
+	rectAreaLightLightController = {
+		color: 0xffffff,
+		intensity: 0,
+		width: 0,
+		height: 0,
+		power: 0,
+		openclose: false,
+	};
+	spotLightController = {
+		color: 0xffffff,
+		intensity: 0,
+		distance:0.0,
+		decay:0,
+		angle: Math.PI/3,
+		penumbra: 0,
+		positionX: 0,
+		positionY: 1,
+		positionZ: 0,
+		targetX: 0,
+		targetY: 0,
+		targetZ: 0,
+		openclose: false,
+
+	};
+
 	let h;
-	let b;
+	let blend;
+	let clip;
+	let depth;
+	let format;
+	let stencil;
+	let materialProperties;
+	let textureImpact;
+	let textureMap;
+	let toConnect;
+	let sceneChange;
+	let lightFolder;
+	let ambientLightFolder;
+	let directionalLightFolder;
+	let hemisphereLightFolder;
+	let LightFolder;
+	let pointLightFolder;
+	let rectAreaLightFolder;
+	let spotLightFolder;
+
+	//Blend
+	const blenDstType = { OneMinusSrcAlphaFactor: THREE.OneMinusSrcAlphaFactor, ZeroFactor: THREE.ZeroFactor, OneFactor: THREE.OneFactor, SrcColorFactor: THREE.SrcColorFactor, OneMinusSrcColorFactor: THREE.OneMinusSrcColorFactor, SrcAlphaFactor: THREE.SrcAlphaFactor, DstAlphaFactor: THREE.DstAlphaFactor, OneMinusDstAlphaFactor: THREE.OneMinusDstAlphaFactor, DstColorFactor: THREE.DstColorFactor, OneMinusDstColorFactor: THREE.OneMinusDstColorFactor, SrcAlphaSaturateFactor: THREE.SrcAlphaSaturateFactor };
+	const blendEquation = { AddEquation: THREE.AddEquation, SubtractEquation: THREE.SubtractEquation, ReverseSubtractEquation: THREE.ReverseSubtractEquation, MinEquation: THREE.MinEquation, MaxEquation: THREE.MaxEquation }
+	const blending = { NoBlending: THREE.NoBlending, NormalBlending: THREE.NormalBlending, AdditiveBlending: THREE.AdditiveBlending, SubtractiveBlending: THREE.SubtractiveBlending, MultiplyBlending: THREE.MultiplyBlending, CustomBlending: THREE.CustomBlending }
+	const blendSrc = { OneMinusSrcAlphaFactor: THREE.OneMinusSrcAlphaFactor, ZeroFactor: THREE.ZeroFactor, OneFactor: THREE.OneFactor, SrcColorFactor: THREE.SrcColorFactor, OneMinusSrcColorFactor: THREE.OneMinusSrcColorFactor, SrcAlphaFactor: THREE.SrcAlphaFactor, DstAlphaFactor: THREE.DstAlphaFactor, OneMinusDstAlphaFactor: THREE.OneMinusDstAlphaFactor, DstColorFactor: THREE.DstColorFactor, OneMinusDstColorFactor: THREE.OneMinusDstColorFactor, SrcAlphaSaturateFactor: THREE.SrcAlphaSaturateFactor };
+	const depthFunc = { NeverDepth: THREE.NeverDepth, AlwaysDepth: THREE.AlwaysDepth, EqualDepth: THREE.EqualDepth, LessDepth: THREE.LessDepth, LessEqualDepth: THREE.LessEqualDepth,GreaterEqualDepth: THREE.GreaterEqualDepth,GreaterDepth: THREE.GreaterDepth,NotEqualDepth: THREE.NotEqualDepth }
+	const formatList = { AlphaFormat: THREE.AlphaFormat, RedFormat: THREE.RedFormat, RedIntegerFormat: THREE.RedIntegerFormat, RGFormat: THREE.RGFormat, RGIntegerFormat: THREE.RGIntegerFormat, RGBFormat: THREE.RGBFormat, RGBIntegerFormat: THREE.RGBIntegerFormat, RGBAFormat: THREE.RGBAFormat, RGBAIntegerFormat: THREE.RGBAIntegerFormat, LuminanceFormat: THREE.LuminanceFormat, LuminanceAlphaFormat: THREE.LuminanceAlphaFormat, RGBEFormat: THREE.RGBEFormat, DepthFormat: THREE.DepthFormat, DepthStencilFormat: THREE.DepthStencilFormat }
+	const stencilFuncList = { NeverStencilFunc: THREE.NeverStencilFunc, LessStencilFunc: THREE.LessStencilFunc, EqualStencilFunc: THREE.EqualStencilFunc, LessEqualStencilFunc: THREE.LessEqualStencilFunc, GreaterStencilFunc: THREE.GreaterStencilFunc, NotEqualStencilFunc: THREE.NotEqualStencilFunc, GreaterEqualStencilFunc: THREE.GreaterEqualStencilFunc, AlwaysStencilFunc: THREE.AlwaysStencilFunc }
+	const stencilFail = { ZeroStencilOp: THREE.ZeroStencilOp, KeepStencilOp: THREE.KeepStencilOp, ReplaceStencilOp: THREE.ReplaceStencilOp, IncrementStencilOp: THREE.IncrementStencilOp, DecrementStencilOp: THREE.DecrementStencilOp, IncrementWrapStencilOp: THREE.IncrementWrapStencilOp, DecrementWrapStencilOp: THREE.DecrementWrapStencilOp, InvertStencilOp: THREE.InvertStencilOp }
+	const precision = { null: null, highp: 'highp', mediump: 'mediump', lowp: 'lowp' }
+	const shadowSide = { null: null, FrontSide: THREE.FrontSide, BackSide: THREE.BackSide, DoubleSide: THREE.DoubleSide }
+	const side = { FrontSide: THREE.FrontSide, BackSide: THREE.BackSide, DoubleSide: THREE.DoubleSide }
+	const wrapSTList = { RepeatWrapping: THREE.RepeatWrapping, ClampToEdgeWrapping: THREE.ClampToEdgeWrapping, MirroredRepeatWrapping: THREE.MirroredRepeatWrapping }
+	const mapping = { UVMapping: THREE.UVMapping, CubeReflectionMapping: THREE.CubeReflectionMapping, CubeRefractionMapping: THREE.CubeRefractionMapping, EquirectangularReflectionMapping: THREE.EquirectangularReflectionMapping,EquirectangularRefractionMapping: THREE.EquirectangularRefractionMapping, CubeUVReflectionMapping: THREE.CubeUVReflectionMapping, CubeUVRefractionMapping: THREE.CubeUVRefractionMapping }
+	const magFilter = { LinearFilter: THREE.LinearFilter, NearestFilter: THREE.NearestFilter }
+	const minFilter = { LinearFilter: THREE.LinearFilter, NearestFilter: THREE.NearestFilter, NearestMipmapNearestFilter: THREE.NearestMipmapNearestFilter, NearestMipmapLinearFilter: THREE.NearestMipmapLinearFilter, LinearFilter: THREE.LinearFilter, LinearMipmapNearestFilter: THREE.LinearMipmapNearestFilter, LinearMipmapLinearFilter: THREE.LinearMipmapLinearFilter }
+	const type = { UnsignedShortType: THREE.UnsignedShortType, UnsignedIntType: THREE.UnsignedIntType, UnsignedInt248Type: THREE.UnsignedInt248Type };
+	const unpackAlignment = { byteAlignment: 1, rowsAlignedToEvenNumberedBytes : 2, wordAlignment : 4, rowsStartOnDoubleWordBoundaries: 8 }
+	const encoding = { LinearEncoding: THREE.LinearEncoding, RGBEEncoding: THREE.RGBEEncoding, GammaEncoding: THREE.GammaEncoding, RGBEEncoding: THREE.RGBEEncoding, RGBM7Encoding: THREE.RGBM7Encoding, RGBM16Encoding: THREE.RGBM16Encoding, RGBDEncoding: THREE.RGBDEncoding, BasicDepthPacking: THREE.BasicDepthPacking, RGBADepthPacking: THREE.RGBADepthPacking }
+	const normalMapType = { TangentSpaceNormalMap: THREE.TangentSpaceNormalMap, ObjectSpaceNormalMap: THREE.ObjectSpaceNormalMap }
+	const wireframeLinecap = { butt: 'butt', round: 'round', square: 'square' }
+	const wireframeLinejoin = { round: 'round', bevel: 'bevel', miter: 'miter' }
+	const bulbLuminousPowers = {
+		"110000 lm (1000W)": 110000,
+		"3500 lm (300W)": 3500,
+		"1700 lm (100W)": 1700,
+		"800 lm (60W)": 800,
+		"400 lm (40W)": 400,
+		"180 lm (25W)": 180,
+		"20 lm (4W)": 20,
+		"Off": 0
+	};
 	const gui = new GUI();
 	
-	h = gui.addFolder( 'Material shell control' );
+	h = gui.addFolder( 'Material shell control' ).close();
+	h.addColor(effectController, 'color').onChange( render )
 	h.add( effectController, 'metalness', 0.0, 1.0, 0.05 ).name( 'metalness' ).onChange( render );
 	h.add( effectController, 'roughness', 0.0, 1.0, 0.025 ).name( 'roughness' ).onChange( render );
 	h.add( effectController, 'clearcoat', 0.0, 1.0, 0.025 ).name( 'clearcoat' ).onChange( render );
@@ -684,20 +898,217 @@ function setupGui() {
 	h.add( effectController, 'sheenRoughness', 0.0, 1.0, 0.025 ).name( 'sheenRoughness' ).onChange( render );
 	h.add( effectController, 'transmission', 0.0, 1.0, 0.025 ).name( 'transmission' ).onChange( render );
 	h.add( effectController, 'alphaTest', 0.0, 1.0, 0.025 ).name( 'alphaTest' ).onChange( render );
-	h.add( effectController, 'opacity', 0.0, 1.0, 0.025 ).name( 'opacity' ).onChange( render );
 	h.add( effectController, 'bumpScale', 0.0, 1.0, 0.025 ).name( 'bumpScale' ).onChange( render );
-	/* h.add( effectController, 'color', 0.0, 1.0, 0.025 ).name( 'color' ).onChange( render ); */
 	h.addColor( effectController, 'emissive').onChange( render );
-	h.add( effectController, 'anistropy', 0, 100, 1 ).name( 'anistropy' ).onChange( render );
-	h.add( effectController, 'magFilter', 0.0, 1.0, 0.025 ).name( 'magFilter' ).onChange( render );
-	h.add( effectController, 'minFilter', 0.0, 1.0, 0.025 ).name( 'minFilter' ).onChange( render );
-	h.add( effectController, 'repeatx', 0.0, 1.0, 0.025 ).name( 'repeatx' ).onChange( render );
-	h.add( effectController, 'repeaty', 0.0, 1.0, 0.025 ).name( 'repeaty' ).onChange( render );
-	h.add( effectController, 'rotation', 0, 360, 1 ).name( 'rotation' ).onChange( render );
-	h.add( effectController, 'centerx', 0.0, 1.0, 0.025 ).name( 'centerx' ).onChange( render );
-	h.add( effectController, 'centery', 0.0, 1.0, 0.025 ).name( 'centery' ).onChange( render );
-	b = gui.addFolder( 'Light control' );
-	b.add( effectController,'blendDst', [ 'THREE.OneMinusSrcAlphaFactor', 'THREE.ZeroFactor', 'THREE.OneFactor', 'THREE.SrcColorFactor', 'THREE.OneMinusSrcColorFactor', 'THREE.SrcAlphaFactor', 'THREE.DstAlphaFactor', 'THREE.OneMinusDstAlphaFactor', 'THREE.DstColorFactor', 'THREE.OneMinusDstColorFactor', 'THREE.SrcAlphaSaturateFactor']).onChange( render ); 
+	
+	blend = gui.addFolder( 'Blending' ).close();
+	const objBlend = { add:function(){ window.open(
+		'https://threejs.org/docs/#api/en/materials/Material.blendDst',
+		'_blank'
+	);}};
+	blend.add(objBlend,'add').name( 'Documentation' );
+	blend.add( effectController,'blendDst',blenDstType).onChange( render ); 
+	blend.add( effectController,'blendEquation',blendEquation).onChange( render ); 
+	blend.add( effectController,'blending',blending).onChange( render ); 
+	blend.add( effectController,'blendSrc',blendSrc).onChange( render ); 
+	clip = gui.addFolder( 'Clip' ).close();
+	const objClip = { add:function(){ window.open(
+		'https://threejs.org/docs/#api/en/materials/Material.clipIntersection',
+		'_blank'
+	);}};
+	clip.add(objClip,'add').name( 'Documentation' );
+	clip.add( effectController,'clipIntersection',[true, false]).onChange( render ); 
+	clip.add( effectController,'clipShadows',[true, false]).onChange( render ); 
+	clip.add( effectController,'clippingPlanes',[]).onChange( render );
+	depth = gui.addFolder( 'Depth' ).close();
+	const objDepth = { add:function(){ window.open(
+		'https://threejs.org/docs/#api/en/materials/Material.depthFunc',
+		'_blank'
+	);}};
+	depth.add(objDepth,'add').name( 'Documentation' );
+	depth.add( effectController,'colorWrite',[true, false]).onChange( render ); 
+	depth.add( effectController,'depthTest',[true, false]).onChange( render ); 
+	depth.add( effectController,'depthWrite',[true, false]).onChange( render ); 
+	depth.add( effectController,'depthFunc',depthFunc).onChange( render ); 
+	format = gui.addFolder( 'Format' ).close();
+	const objFormat = { add:function(){ window.open(
+		'https://threejs.org/docs/#api/en/constants/Textures',
+		'_blank'
+	);}};
+	format.add(objFormat, 'add').name( 'Documentation' );
+	format.add( effectController, 'format', formatList).onChange( render ); 
+	stencil = gui.addFolder( 'Stencil' ).close();
+	const objStencil = { add:function(){ window.open(
+		'https://threejs.org/docs/#api/en/materials/Material.stencilWrite',
+		'_blank'
+	);}};
+	stencil.add(objStencil,'add').name( 'Documentation' );
+	stencil.add( effectController,'stencilWrite',[true, false]).onChange( render ); 
+	stencil.add(effectController, 'stencilWriteMask').onChange( render )
+	stencil.add( effectController,'stencilFunc',stencilFuncList).onChange( render ); 
+	stencil.add( effectController, 'stencilRef', 0, 1, 1 ).name( 'stencilRef' ).onChange( render );
+	stencil.add(effectController, 'stencilFuncMask').onChange( render );
+	stencil.add( effectController,'stencilFail',stencilFail).onChange( render ); 
+	stencil.add( effectController,'stencilZFail',stencilFail).onChange( render ); 
+	stencil.add( effectController,'stancilZPass',stencilFail).onChange( render ); 
+	materialProperties = gui.addFolder( 'Material Properties' ).close();
+	const objMatProp = { add:function(){ window.open(
+		'https://threejs.org/docs/#api/en/materials/Material.fog',
+		'_blank'
+	);}};
+	materialProperties.add(objMatProp, 'add').name( 'Documentation' );
+	materialProperties.add( effectController, 'opacity', 0.0, 1.0, 0.025 ).name( 'opacity' ).onChange( render );
+	materialProperties.add( effectController,'fog',[true, false]).onChange( render ); 
+	materialProperties.add( effectController,'polygonOffset',[true, false]).onChange( render );
+	materialProperties.add( effectController, 'polygonOffsetFactor', 0, 100, 1 ).onChange( render );
+	materialProperties.add( effectController, 'polygonOffsetUnits', 0, 100, 1 ).onChange( render );
+	materialProperties.add( effectController,'precision',precision).onChange( render ); 
+	materialProperties.add( effectController,'premultipliedAlpha',[true, false]).onChange( render );
+	materialProperties.add( effectController,'dithering',[true, false]).onChange( render );
+	materialProperties.add( effectController,'shadowSide',shadowSide).onChange( render ); 
+	materialProperties.add( effectController,'side',side).onChange( render ); 
+	materialProperties.add( effectController,'toneMapped',[true, false]).onChange( render );
+	materialProperties.add( effectController,'transparent',[true, false]).onChange( render );
+	textureImpact = gui.addFolder( 'Textures Impact' ).close();
+	const objtextImp = { add:function(){ window.open(
+		'https://threejs.org/docs/#api/en/textures/Texture',
+		'_blank'
+	);}};
+	textureImpact.add(objtextImp, 'add').name( 'Documentation' );
+	textureImpact.add( effectController,'wrapS',wrapSTList).onChange( render ); 
+ 	textureImpact.add( effectController,'wrapT',wrapSTList).onChange( render );
+	textureImpact.add( effectController,'mapping',mapping).onChange( render );
+	textureImpact.add( effectController,'magFilter',magFilter).onChange( render );
+	textureImpact.add( effectController,'minFilter',minFilter).onChange( render );
+	textureImpact.add( effectController,'type',type).onChange( render );
+	textureImpact.add( effectController, 'offsetx', 0.0, 1.0, 0.025 ).name( 'offset.x' ).onChange( render );
+	textureImpact.add( effectController, 'offsety', 0.0, 1.0, 0.025 ).name( 'offset.y' ).onChange( render );
+	textureImpact.add( effectController,'formatMap',format).onChange( render );
+	textureImpact.add( effectController, 'anisotropy', 0, 100, 1 ).name( 'anisotropy' ).onChange( render );
+	textureImpact.add( effectController, 'repeatx', 0, 200, 1 ).name( 'repeatx' ).onChange( render );
+	textureImpact.add( effectController, 'repeaty', 0, 200, 1 ).name( 'repeaty' ).onChange( render );
+	textureImpact.add( effectController, 'rotation', 0, 360, 1 ).name( 'rotation' ).onChange( render );
+	textureImpact.add( effectController, 'centerx', 0.0, 1.0, 0.025 ).name( 'centerx' ).onChange( render );
+	textureImpact.add( effectController, 'centery', 0.0, 1.0, 0.025 ).name( 'centery' ).onChange( render );
+	textureImpact.add( effectController,'generateMipmaps',[true, false]).onChange( render );
+	textureImpact.add( effectController,'premultiplyAlpha',[true, false]).onChange( render );
+	textureImpact.add( effectController,'flipY',[true, false]).onChange( render );
+	textureImpact.add( effectController,'unpackAlignment',unpackAlignment).onChange( render );
+	textureImpact.add( effectController,'encoding',encoding).onChange( render );
+
+	textureMap = gui.addFolder( 'Textures Map' ).close();
+	textureMap.add( effectController, 'clearcoatNormalScaleX', 0.0, 1.0, 0.1 ).name( 'clearcoatNormalScale.x' ).onChange( render );
+	textureMap.add( effectController, 'clearcoatNormalScaleY', 0.0, 1.0, 0.1 ).name( 'clearcoatNormalScale.y' ).onChange( render );
+	textureMap.add( effectController, 'aoMapIntensity', 0.0, 1.0, 0.1 ).name( 'aoMapIntensity' ).onChange( render );
+	textureMap.add( effectController, 'displacementScale', 0.0, 1.0, 0.1 ).name( 'displacementScale' ).onChange( render );
+	textureMap.add( effectController, 'displacementBias', 0.0, 1.0, 0.1 ).name( 'displacementBias' ).onChange( render );
+	textureMap.add( effectController, 'emissiveIntensity', 0, 100, 1 ).name( 'emissiveIntensity' ).onChange( render );
+	textureMap.add( effectController, 'envMapIntensity', 0, 100, 1 ).name( 'envMapIntensity' ).onChange( render );
+	textureMap.add( effectController,'flatShading',[true, false]).onChange( render );
+	textureMap.add( effectController,'normalMapType',normalMapType).onChange( render );
+	textureMap.add( effectController, 'normalScaleX', 0.0, 1.0, 0.1 ).name( 'normalScale.x' ).onChange( render );
+	textureMap.add( effectController, 'normalScaleY', 0.0, 1.0, 0.1 ).name( 'normalScale.y' ).onChange( render );
+	textureMap.add( effectController, 'refractionRatio', 0, 3, 0.01 ).name( 'refractionRatio' ).onChange( render );
+	textureMap.add( effectController,'wireframe',[true, false]).onChange( render );
+	textureMap.add( effectController, 'wireframeLinewidth', 0, 100, 1 ).name( 'wireframeLinewidth' ).onChange( render );
+	textureMap.add( effectController,'wireframeLinecap',wireframeLinecap).onChange( render );
+	textureMap.add( effectController,'wireframeLinejoin',wireframeLinejoin).onChange( render );
+
+	toConnect = gui.addFolder( 'A connecter aucun impact' ).close();
+	toConnect.add( effectController,'clearcoatMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'clearcoatNormalMap',[true, false]).onChange( render )
+	toConnect.add( effectController,'clearcoatRoughnessMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'sheenRoughnessMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'sheenColorMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'transmissionMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'alphaMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'aoMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'bumpMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'displacementMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'emissiveMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'lightMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'envMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'map',[true, false]).onChange( render );
+	toConnect.add( effectController,'metalnessMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'normalMap',[true, false]).onChange( render );
+	toConnect.add( effectController,'roughnessMap',[true, false]).onChange( render );
+	
+
+	sceneChange = gui.addFolder( 'Scene Change' ).close();
+	const objScene = { add:function(){ window.open(
+		'https://threejs.org/docs/#api/en/scenes/Scene.environment',
+		'_blank'
+	);}};
+	sceneChange.add(objScene,'add').name( 'Documentation' );
+	sceneChange.addColor(sceneController, 'sceneBg').onChange( render );
+	sceneChange.add( sceneController,'fogYN',[true, false]).onChange( render );
+	sceneChange.addColor(sceneController, 'fogColor').onChange( render );
+	sceneChange.add( sceneController, 'fogNear', -100, 100, 5 ).name( 'fogNear' ).onChange( render );
+	sceneChange.add( sceneController, 'fogFar', -1000, 3000, 10 ).name( 'fogFar' ).onChange( render );
+	sceneChange.add( sceneController,'environment',[true, false]).onChange( render );
+
+	lightFolder = gui.addFolder( 'Light' ).close();
+	ambientLightFolder = lightFolder.addFolder( 'Ambient Light' ).close()
+	ambientLightFolder.add( ambientLightController,'openclose',[true, false]).onChange( render );
+	ambientLightFolder.addColor(ambientLightController, 'color').onChange( render );
+	ambientLightFolder.add( ambientLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	directionalLightFolder = lightFolder.addFolder( 'Directional Light' ).close()
+	directionalLightFolder.add( directionalLightController,'openclose',[true, false]).onChange( render );
+	directionalLightFolder.addColor(directionalLightController, 'color').onChange( render );
+	directionalLightFolder.add( directionalLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	directionalLightFolder.add( directionalLightController,'castShadow',[true, false]).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'positionX', 0.0, 1.0, 0.025 ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'positionY', 0.0, 1.0, 0.025 ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'positionZ', 0.0, 1.0, 0.025 ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'targetX', 0.0, 1.0, 0.025 ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'targetY', 0.0, 1.0, 0.025 ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'targetZ', 0.0, 1.0, 0.025 ).onChange( render );
+
+	hemisphereLightFolder = lightFolder.addFolder( 'Hemisphere Light' ).close();
+	hemisphereLightFolder.add( hemisphereLightController,'openclose',[true, false]).onChange( render );
+	hemisphereLightFolder.addColor(hemisphereLightController, 'skyColor').onChange( render );
+	hemisphereLightFolder.addColor(hemisphereLightController, 'groundColor').onChange( render );
+	hemisphereLightFolder.add( hemisphereLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	hemisphereLightFolder.add( hemisphereLightController, 'positionX', 0.0, 1.0, 0.025 ).onChange( render );
+	hemisphereLightFolder.add( hemisphereLightController, 'positionY', 0.0, 1.0, 0.025 ).onChange( render );
+	hemisphereLightFolder.add( hemisphereLightController, 'positionZ', 0.0, 1.0, 0.025 ).onChange( render );
+	LightFolder = lightFolder.addFolder( 'Light' ).close();
+	LightFolder.add( LightController,'openclose',[true, false]).onChange( render );
+	LightFolder.addColor(LightController, 'color').onChange( render );
+	LightFolder.add( LightController, 'intensity', 0, 100, 1 ).onChange( render );
+	pointLightFolder = lightFolder.addFolder( 'Point Light' ).close()
+	pointLightFolder.add( pointLightController,'openclose',[true, false]).onChange( render );
+	pointLightFolder.addColor(pointLightController, 'color').onChange( render );
+	pointLightFolder.add( pointLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	pointLightFolder.add( pointLightController, 'distance', 0.0, 100.0, 0.1 ).onChange( render );
+	pointLightFolder.add( pointLightController, 'decay', 0, 100, 1 ).onChange( render );
+	pointLightFolder.add( effectController,'power',bulbLuminousPowers).onChange( render );
+	rectAreaLightFolder = lightFolder.addFolder( 'Rect Area Light' ).close()
+/* 	rectAreaLightFolder
+	rectAreaLightFolder
+	rectAreaLightFolder
+	rectAreaLightFolder
+	rectAreaLightFolder
+	rectAreaLightFolder */
+	spotLightFolder = lightFolder.addFolder( 'Spot Light' ).close()
+/* 	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder
+	spotLightFolder */
+
+
+
+
+
 }
 function rotateObject(carModel) {
 	setInterval(()=>carModel.rotation.z += 0.001, 10)	
@@ -711,6 +1122,7 @@ function rotateObject(carModel) {
 	}
 	function render() {
 		//Material shell control
+		bodyMaterial.color.set(effectController.color);
 		bodyMaterial.metalness = effectController.metalness;
 		bodyMaterial.roughness = effectController.roughness;
 		bodyMaterial.clearcoat = effectController.clearcoat;
@@ -723,23 +1135,90 @@ function rotateObject(carModel) {
 		bodyMaterial.sheenColor.set(effectController.sheenColor);
 		bodyMaterial.transmission = effectController.transmission;
 		bodyMaterial.alphaTest = effectController.alphaTest;
-		bodyMaterial.opacity = effectController.opacity;
 		bodyMaterial.bumpScale = effectController.bumpScale;
   	bodyMaterial.emissive.set(effectController.emissive);
-		bodyMaterial.map.anistropy = effectController.anistropy;
-		bodyMaterial.magFilter = effectController.magFilter;
-		bodyMaterial.minFilter = effectController.minFilter; 
-		bodyMaterial.rotation = effectController.rotation; 
-		console.log(effectController.blendDst)
+		/* console.log(bodyMaterial) */
+
+		//blending
+		bodyMaterial.blendDst = effectController.blendDst;
+		bodyMaterial.blendEquation = effectController.blendEquation;
+		bodyMaterial.blending = effectController.blending;
+		bodyMaterial.blendSrc = effectController.blendSrc;
+		//depth
+		bodyMaterial.colorWrite = effectController.colorWrite;
+		bodyMaterial.depthTest = effectController.depthTest;
+		bodyMaterial.depthWrite = effectController.depthWrite;
+		bodyMaterial.depthFunc = effectController.depthFunc;
+		//format
+		bodyMaterial.format = effectController.format;
+		//stencil
+		bodyMaterial.stencilWrite = effectController.stencilWrite;
+		bodyMaterial.stencilWriteMask = effectController.stencilWriteMask;
+		bodyMaterial.stencilFunc = effectController.stencilFunc;
+		bodyMaterial.stencilRef = effectController.stencilRef;
+		bodyMaterial.stencilFuncMask = effectController.stencilFuncMask;
+		bodyMaterial.stencilFail = effectController.stencilFail;
+		bodyMaterial.stencilZFail = effectController.stencilZFail;
+		bodyMaterial.stancilZPass = effectController.stancilZPass;
+		//Material Properties
+		bodyMaterial.opacity = effectController.opacity;
+		bodyMaterial.fog = effectController.fog;
+		bodyMaterial.polygonOffset = effectController.polygonOffset;
+		bodyMaterial.polygonOffsetFactor = effectController.polygonOffsetFactor;
+		bodyMaterial.polygonOffsetUnits = effectController.polygonOffsetUnits;
+		bodyMaterial.precision = effectController.precision;
+		bodyMaterial.premultipliedAlpha = effectController.premultipliedAlpha;
+		bodyMaterial.dithering = effectController.dithering;
+		bodyMaterial.shadowSide = effectController.shadowSide;
+		bodyMaterial.side = effectController.side;
+		bodyMaterial.toneMapped = effectController.toneMapped;
+		bodyMaterial.transparent = effectController.transparent;
+		//textures impact
+		bodyMaterial.map.wrapS = effectController.wrapS;
+		bodyMaterial.map.wrapT = effectController.wrapT;
+		bodyMaterial.map.mapping = effectController.mapping;
+		bodyMaterial.map.magFilter = effectController.magFilter;
+		bodyMaterial.map.minFilter = effectController.minFilter;
+		bodyMaterial.map.type = effectController.type;
+		bodyMaterial.map.offset.x = effectController.offsetx;
+		bodyMaterial.map.offset.y = effectController.offsety;
+		bodyMaterial.map.format = effectController.formatMap;
+		bodyMaterial.map.anisotropy = effectController.anisotropy;
+		bodyMaterial.map.rotation = effectController.rotation; 
 		bodyMaterial.map.repeat.x = effectController.repeatx;
 		bodyMaterial.map.repeat.y = effectController.repeaty;
 		bodyMaterial.map.center.x = effectController.centerx;
 		bodyMaterial.map.center.y = effectController.centery;
-		bodyMaterial.blendDst = effectController.blendDst
-		/* bodyMaterial.repeat.set(effectController.repeatx, effectController.repeaty); */
-		/* bodyMaterial.rotation = effectController.rotation; */
-		/* bodyMaterial.center.set(effectController.centerx, effectController.centery); */
+		bodyMaterial.map.generateMipmaps = effectController.generateMipmaps;
+		bodyMaterial.map.premultiplyAlpha = effectController.premultiplyAlpha;
+		bodyMaterial.map.flipY = effectController.flipY;
+		bodyMaterial.map.unpackAlignment = effectController.unpackAlignment;
+		bodyMaterial.map.encoding = effectController.encoding;
+		//textures Map
+		bodyMaterial.map.clearcoatNormalScale = new Vector2(effectController.clearcoatNormalScaleX,effectController.clearcoatNormalScaleY);
+		bodyMaterial.map.aoMapIntensity = effectController.aoMapIntensity;
 
+		bodyMaterial.map.displacementScale = effectController.displacementScale;
+		bodyMaterial.map.displacementBias = effectController.displacementBias;
+		bodyMaterial.map.emissiveIntensity = effectController.emissiveIntensity;
+		bodyMaterial.map.envMapIntensity = effectController.envMapIntensity;
+		bodyMaterial.map.flatShading = effectController.flatShading;
+		bodyMaterial.map.normalMapType = effectController.normalMapType;
+		bodyMaterial.map.clearcoatNormalScale = new Vector2(effectController.normalScaleX,effectController.normalScaleY);
+		bodyMaterial.map.refractionRatio = effectController.refractionRatio;
+		bodyMaterial.map.wireframe = effectController.wireframe;
+		bodyMaterial.map.wireframeLinewidth = effectController.wireframeLinewidth;
+		bodyMaterial.map.wireframeLinecap = effectController.wireframeLinecap;
+		bodyMaterial.map.wireframeLinejoin = effectController.wireframeLinejoin;
+
+		//Scene
+		scene.background.set(sceneController.sceneBg);
+		if(sceneController.fogYN === true ){
+			scene.fog = new Fog(sceneController.fogColor,sceneController.fogNear,sceneController.fogFar)}
+		else {
+			scene.fog =null;
+		}
+		/* console.log(scene) */
     renderer.render(scene, camera);
 	}
 }
