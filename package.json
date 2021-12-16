@@ -37,7 +37,7 @@
   "scripts": {
     "start": "webpack serve",
     "build:dev": "NODE_ENV=development webpack --mode development",
-    "build:prod": "NODE_ENV=production webpack --mode production"
+    "build": "NODE_ENV=production webpack --mode production"
   },
   "dependencies": {
     "@babel/core": "^7.14.3",
@@ -45,6 +45,7 @@
     "@tweenjs/tween.js": "^18",
     "gltf-pipeline": "^3.0.4",
     "lodash": "^4.17.21",
+    "surge": "^0.23.0",
     "three": "^0.135.0"
   }
 }

@@ -3,12 +3,24 @@ import './styles/main.scss';
 import * as THREE from 'three';
 import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+/* import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'; */
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import { Vector2 } from 'three';
 import { Fog } from 'three';
 import { Vector3 } from 'three';
+import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
+
+const disparition = () => {
+  const fenetreDisparition = document.querySelector('.disparition');
+  fenetreDisparition.style.display = 'none';
+/* 	const path = document.querySelector('.st0')
+	
+	console.log(path.points.length) */
+}
+
+const time = setTimeout(disparition, 8000);
+
 
 const menuOpen = () => {
 	const menuClick = document.querySelector('.barreElement');
@@ -125,12 +137,13 @@ const veldt = () => {
 	let spotLightController;
 
 	const container = document.getElementById('simulateur');
-	const renderer = new THREE.WebGLRenderer( { antialias: true } );
+	const renderer = new THREE.WebGLRenderer( { antialias: false } );
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.outputEncoding = THREE.RGBDEncoding;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+/*   renderer.toneMapping = THREE.ACESFilmicToneMapping;
+	renderer.toneMappingExposure = 1.2; */
   container.appendChild(renderer.domElement);
 	THREE.Object3D.DefaultUp = new THREE.Vector3( 0, 0, 1 );
   const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1500);
@@ -146,8 +159,8 @@ const veldt = () => {
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf4f7f7);
-  scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
-	
+  scene.environment = pmremGenerator.fromScene(scene).texture;
+
 	const directionalLight = new THREE.DirectionalLight( 0x0c0c0c, 3);
 	directionalLight.position.set(0, 1, 0);
 	scene.add( directionalLight );
@@ -159,8 +172,18 @@ const veldt = () => {
 	const RectAreaLight = new THREE.RectAreaLight(null, 0,0,0,0);
 	const SpotLight = new THREE.SpotLight(null, 0, 0, Math.PI/3, 0.0, 0);
 	scene.add( ambientLight,hemisphereLight,Light,PointLight,	RectAreaLight, SpotLight );
+	/* const rectLight1 = new THREE.RectAreaLight( 0xff0000, 5, 4, 10 );
+	rectLight1.position.set( - 5, 5, 5 );
+	scene.add( rectLight1 );
 
+	const rectLight2 = new THREE.RectAreaLight( 0x00ff00, 5, 4, 10 );
+	rectLight2.position.set( 0, 5, 5 );
+	scene.add( rectLight2 );
 
+	const rectLight3 = new THREE.RectAreaLight( 0x0000ff, 5, 4, 10 );
+	rectLight3.position.set( 5, 5, 5 );
+	scene.add( rectLight3 );
+ */
 	const textureBody = new THREE.TextureLoader();
 	const svgLoad = new SVGLoader();
 	const carbonBaseColor = textureBody.load('../src/assets/textures/carbon_fibers_basecolor_1k.jpg', function (map) {
@@ -812,6 +835,9 @@ function setupGui() {
 		width: 0,
 		height: 0,
 		power: 0,
+		positionX: 0,
+		positionY: 1,
+		positionZ: 0,
 		openclose: false,
 	};
 	spotLightController = {
@@ -1059,21 +1085,21 @@ function setupGui() {
 	directionalLightFolder.addColor(directionalLightController, 'color').onChange( render );
 	directionalLightFolder.add( directionalLightController, 'intensity', 0, 100, 1 ).onChange( render );
 	directionalLightFolder.add( directionalLightController,'castShadow',[true, false]).onChange( render );
-	directionalLightFolder.add( directionalLightController, 'positionX', 0.0, 1.0, 0.025 ).onChange( render );
-	directionalLightFolder.add( directionalLightController, 'positionY', 0.0, 1.0, 0.025 ).onChange( render );
-	directionalLightFolder.add( directionalLightController, 'positionZ', 0.0, 1.0, 0.025 ).onChange( render );
-	directionalLightFolder.add( directionalLightController, 'targetX', 0.0, 1.0, 0.025 ).onChange( render );
-	directionalLightFolder.add( directionalLightController, 'targetY', 0.0, 1.0, 0.025 ).onChange( render );
-	directionalLightFolder.add( directionalLightController, 'targetZ', 0.0, 1.0, 0.025 ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'positionX', -50.0, 100.0, 0.1  ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'positionY', -50.0, 100.0, 0.1  ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'positionZ', -50.0, 100.0, 0.1  ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'targetX', -50.0, 100.0, 0.1  ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'targetY', -50.0, 100.0, 0.1  ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'targetZ', -50.0, 100.0, 0.1  ).onChange( render );
 
 	hemisphereLightFolder = lightFolder.addFolder( 'Hemisphere Light' ).close();
 	hemisphereLightFolder.add( hemisphereLightController,'openclose',[true, false]).onChange( render );
 	hemisphereLightFolder.addColor(hemisphereLightController, 'skyColor').onChange( render );
 	hemisphereLightFolder.addColor(hemisphereLightController, 'groundColor').onChange( render );
 	hemisphereLightFolder.add( hemisphereLightController, 'intensity', 0, 100, 1 ).onChange( render );
-	hemisphereLightFolder.add( hemisphereLightController, 'positionX', 0.0, 1.0, 0.025 ).onChange( render );
-	hemisphereLightFolder.add( hemisphereLightController, 'positionY', 0.0, 1.0, 0.025 ).onChange( render );
-	hemisphereLightFolder.add( hemisphereLightController, 'positionZ', 0.0, 1.0, 0.025 ).onChange( render );
+	hemisphereLightFolder.add( hemisphereLightController, 'positionX',-50.0, 1000.0, 0.1  ).onChange( render );
+	hemisphereLightFolder.add( hemisphereLightController, 'positionY', -50.0, 1000.0, 0.1  ).onChange( render );
+	hemisphereLightFolder.add( hemisphereLightController, 'positionZ', -50.0, 1000.0, 0.1  ).onChange( render );
 	LightFolder = lightFolder.addFolder( 'Light' ).close();
 	LightFolder.add( LightController,'openclose',[true, false]).onChange( render );
 	LightFolder.addColor(LightController, 'color').onChange( render );
@@ -1089,9 +1115,12 @@ function setupGui() {
 	rectAreaLightFolder.add( rectAreaLightLightController,'openclose',[true, false]).onChange( render );
 	rectAreaLightFolder.addColor(rectAreaLightLightController, 'color').onChange( render );
 	rectAreaLightFolder.add( rectAreaLightLightController, 'intensity', 0, 100, 1 ).onChange( render );
-	rectAreaLightFolder.add( rectAreaLightLightController, 'width', 0, 100, 1 ).onChange( render );
-	rectAreaLightFolder.add( rectAreaLightLightController, 'height', 0, 100, 1 ).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController, 'width', 0, 1000, 1 ).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController, 'height', 0, 1000, 1 ).onChange( render );
 	rectAreaLightFolder.add( rectAreaLightLightController,'power',bulbLuminousPowers).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController,'positionX', -50.0, 1000.0, 0.1 ).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController,'positionY', -50.0, 1000.0, 0.025 ).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController,'positionZ',-50.0, 1000.0, 0.025 ).onChange( render );
 	spotLightFolder = lightFolder.addFolder( 'Spot Light' ).close()
 	spotLightFolder.add( spotLightController,'openclose',[true, false]).onChange( render );
 	spotLightFolder.addColor(spotLightController, 'color').onChange( render );
@@ -1100,12 +1129,12 @@ function setupGui() {
 	spotLightFolder.add( spotLightController, 'decay', 0, 100, 1 ).onChange( render );
 	spotLightFolder.add( spotLightController,'angle',angleList).onChange( render );
 	spotLightFolder.add( spotLightController, 'penumbra', 0, 100, 1 ).onChange( render );
-	spotLightFolder.add( spotLightController, 'positionX', 0.0, 1.0, 0.025 ).onChange( render );
-	spotLightFolder.add( spotLightController, 'positionY', 0.0, 1.0, 0.025 ).onChange( render );
-	spotLightFolder.add( spotLightController, 'positionZ', 0.0, 1.0, 0.025 ).onChange( render );
-	spotLightFolder.add( spotLightController, 'targetX', 0.0, 1.0, 0.025 ).onChange( render );
-	spotLightFolder.add( spotLightController, 'targetY', 0.0, 1.0, 0.025 ).onChange( render );
-	spotLightFolder.add( spotLightController, 'targetZ', 0.0, 1.0, 0.025 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'positionX', -50.0, 1000.0, 0.1  ).onChange( render );
+	spotLightFolder.add( spotLightController, 'positionY', -50.0, 1000.0, 0.1  ).onChange( render );
+	spotLightFolder.add( spotLightController, 'positionZ', -50.0, 1000.0, 0.1  ).onChange( render );
+	spotLightFolder.add( spotLightController, 'targetX', -50.0, 1000.0, 0.1  ).onChange( render );
+	spotLightFolder.add( spotLightController, 'targetY',-50.0, 1000.0, 0.1 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'targetZ',-50.0, 1000.0, 0.1  ).onChange( render );
 
 
 
@@ -1113,7 +1142,7 @@ function setupGui() {
 
 }
 function rotateObject(carModel) {
-	setInterval(()=>carModel.rotation.z += 0.001, 10)	
+	/* setInterval(()=>carModel.rotation.z += 0.001, 10)	 */
 	setupGui();
 	animate()
 }
@@ -1269,9 +1298,9 @@ function rotateObject(carModel) {
 		if (pointLightController.openclose === true ){
 			scene.children[4].color.set(pointLightController.color);
 			scene.children[4].intensity = pointLightController.intensity;
-			scene.children[4].distance = pointLightController.distance
-			scene.children[4].decay = pointLightController.decay
-			scene.children[4].power = pointLightController.power
+			scene.children[4].distance = pointLightController.distance;
+			scene.children[4].decay = pointLightController.decay;
+			scene.children[4].power = pointLightController.power;
 		}
 		else {
 			scene.children[4].color.set(null);
@@ -1282,27 +1311,29 @@ function rotateObject(carModel) {
 		}
 		if (rectAreaLightLightController.openclose === true ){
 			scene.children[5].color.set(rectAreaLightLightController.color);
-			scene.children[5].intensity = rectAreaLightLightController.intensity;
-			scene.children[5].width = rectAreaLightLightController.width
-			scene.children[5].height = rectAreaLightLightController.height
-			scene.children[5].power = rectAreaLightLightController.power
+			scene.children[5].intensity = rectAreaLightLightController.intensity / Math.pow( 0.02, 2.0 );
+		 	scene.children[5].width = rectAreaLightLightController.width;
+			scene.children[5].height = rectAreaLightLightController.height;
+			scene.children[5].power = rectAreaLightLightController.power;
+			scene.children[5].position.set(rectAreaLightLightController.positionX,rectAreaLightLightController.positionY,rectAreaLightLightController.positionZ);
+			RectAreaLightUniformsLib.init();
 		}
 		else {
 			scene.children[5].color.set(null);
-			scene.children[5].intensity = 0;
+ 			scene.children[5].intensity = 0;
 			scene.children[5].width = 0;
 			scene.children[5].height = 0;
-			scene.children[5].power = 0;
+			scene.children[5].position.set(0,1,0)
 		}
 		if (spotLightController.openclose === true ){
 			scene.children[6].color.set(spotLightController.color);
 			scene.children[6].intensity = spotLightController.intensity;
-			scene.children[6].distance = spotLightController.distance
-			scene.children[6].decay = spotLightController.decay
-			scene.children[6].angle = spotLightController.angle
-			scene.children[6].penumbra = spotLightController
-			scene.children[6].position.set(spotLightController.positionX,spotLightController.positionY,spotLightController.positionZ)
-			scene.children[6].target.position.set(spotLightController.targetX,spotLightController.targetY,spotLightController.targetZ)
+			scene.children[6].distance = spotLightController.distance;
+			scene.children[6].decay = spotLightController.decay;
+			scene.children[6].angle = spotLightController.angle;
+			scene.children[6].penumbra = spotLightController;
+			scene.children[6].position.set(spotLightController.positionX,spotLightController.positionY,spotLightController.positionZ);
+			scene.children[6].target.position.set(spotLightController.targetX,spotLightController.targetY,spotLightController.targetZ);
 		}
 		else {
 			scene.children[6].color.set(null);
@@ -1332,4 +1363,4 @@ function rotateObject(carModel) {
 
 // Append heading node to the DOM
 const app = document.querySelector('#root')
-app.append(veldt(),menuOpen(),menuElement())
+app.append(time,veldt(),menuOpen(),menuElement())
