@@ -8,6 +8,7 @@ import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import { Vector2 } from 'three';
 import { Fog } from 'three';
+import { Vector3 } from 'three';
 
 const menuOpen = () => {
 	const menuClick = document.querySelector('.barreElement');
@@ -882,6 +883,7 @@ function setupGui() {
 		"20 lm (4W)": 20,
 		"Off": 0
 	};
+	const angleList = { Math1 : Math.PI/3, Math2: Math.PI/2 }
 	const gui = new GUI();
 	
 	h = gui.addFolder( 'Material shell control' ).close();
@@ -1084,26 +1086,26 @@ function setupGui() {
 	pointLightFolder.add( pointLightController, 'decay', 0, 100, 1 ).onChange( render );
 	pointLightFolder.add( effectController,'power',bulbLuminousPowers).onChange( render );
 	rectAreaLightFolder = lightFolder.addFolder( 'Rect Area Light' ).close()
-/* 	rectAreaLightFolder
-	rectAreaLightFolder
-	rectAreaLightFolder
-	rectAreaLightFolder
-	rectAreaLightFolder
-	rectAreaLightFolder */
+	rectAreaLightFolder.add( rectAreaLightLightController,'openclose',[true, false]).onChange( render );
+	rectAreaLightFolder.addColor(rectAreaLightLightController, 'color').onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController, 'width', 0, 100, 1 ).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController, 'height', 0, 100, 1 ).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController,'power',bulbLuminousPowers).onChange( render );
 	spotLightFolder = lightFolder.addFolder( 'Spot Light' ).close()
-/* 	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder
-	spotLightFolder */
+	spotLightFolder.add( spotLightController,'openclose',[true, false]).onChange( render );
+	spotLightFolder.addColor(spotLightController, 'color').onChange( render );
+	spotLightFolder.add( spotLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'distance', 0.0, 10000, 0.1 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'decay', 0, 100, 1 ).onChange( render );
+	spotLightFolder.add( spotLightController,'angle',angleList).onChange( render );
+	spotLightFolder.add( spotLightController, 'penumbra', 0, 100, 1 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'positionX', 0.0, 1.0, 0.025 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'positionY', 0.0, 1.0, 0.025 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'positionZ', 0.0, 1.0, 0.025 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'targetX', 0.0, 1.0, 0.025 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'targetY', 0.0, 1.0, 0.025 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'targetZ', 0.0, 1.0, 0.025 ).onChange( render );
 
 
 
@@ -1213,14 +1215,118 @@ function rotateObject(carModel) {
 
 		//Scene
 		scene.background.set(sceneController.sceneBg);
-		if(sceneController.fogYN === true ){
-			scene.fog = new Fog(sceneController.fogColor,sceneController.fogNear,sceneController.fogFar)}
+		if (sceneController.fogYN === true ){
+			scene.fog = new Fog(sceneController.fogColor,sceneController.fogNear,sceneController.fogFar);
+		}
 		else {
 			scene.fog =null;
+		}
+		if (ambientLightController.openclose === true ){
+			scene.children[1].color.set(ambientLightController.color);
+			scene.children[1].intensity = ambientLightController.intensity;
+		}
+		else {
+			scene.children[1].color.set(null);
+			scene.children[1].intensity = 0;
+		}
+		if (directionalLightController.openclose === true ){
+			scene.children[0].color.set(directionalLightController.color);
+			scene.children[0].intensity = directionalLightController.intensity;
+			scene.children[0].castShadow = directionalLightController.castShadow;
+			scene.children[0].position.set(directionalLightController.positionX,directionalLightController.positionY,directionalLightController.positionZ);
+			scene.children[0].target.position.set(directionalLightController.targetX,directionalLightController.targetY,directionalLightController.targetZ);
+		}
+		else {
+			scene.children[0].color.set(null);
+			scene.children[0].intensity = 0;
+			scene.children[0].castShadow = false;
+			scene.children[0].position.set(0, 1, 0);
+			scene.children[0].target.position.set(0, 0, 0);
+		}
+
+		if (hemisphereLightController.openclose === true ){
+			scene.children[2].color.set(hemisphereLightController.skyColor);
+			scene.children[2].groundColor.set(hemisphereLightController.groundColor);
+			scene.children[2].intensity = hemisphereLightController.intensity;
+			scene.children[2].position.set(hemisphereLightController.positionX,hemisphereLightController.positionY,hemisphereLightController.positionZ);
+		}
+		else {
+			scene.children[2].color.set(null);
+			scene.children[2].groundColor.set(null);
+			scene.children[2].intensity = 0;
+			scene.children[2].position.set(0, 1, 0);
+		}
+
+		if (LightController.openclose === true ){
+			scene.children[3].color.set(LightController.color);
+			scene.children[3].intensity = LightController.intensity;
+		}
+		else {
+			scene.children[3].color.set(null);
+			scene.children[3].intensity = 0;
+		}
+
+		if (pointLightController.openclose === true ){
+			scene.children[4].color.set(pointLightController.color);
+			scene.children[4].intensity = pointLightController.intensity;
+			scene.children[4].distance = pointLightController.distance
+			scene.children[4].decay = pointLightController.decay
+			scene.children[4].power = pointLightController.power
+		}
+		else {
+			scene.children[4].color.set(null);
+			scene.children[4].intensity = 0;
+			scene.children[4].distance = 0;
+			scene.children[4].decay = 0;
+			scene.children[4].power = 0;
+		}
+		if (rectAreaLightLightController.openclose === true ){
+			scene.children[5].color.set(rectAreaLightLightController.color);
+			scene.children[5].intensity = rectAreaLightLightController.intensity;
+			scene.children[5].width = rectAreaLightLightController.width
+			scene.children[5].height = rectAreaLightLightController.height
+			scene.children[5].power = rectAreaLightLightController.power
+		}
+		else {
+			scene.children[5].color.set(null);
+			scene.children[5].intensity = 0;
+			scene.children[5].width = 0;
+			scene.children[5].height = 0;
+			scene.children[5].power = 0;
+		}
+		if (spotLightController.openclose === true ){
+			scene.children[6].color.set(spotLightController.color);
+			scene.children[6].intensity = spotLightController.intensity;
+			scene.children[6].distance = spotLightController.distance
+			scene.children[6].decay = spotLightController.decay
+			scene.children[6].angle = spotLightController.angle
+			scene.children[6].penumbra = spotLightController
+			scene.children[6].position.set(spotLightController.positionX,spotLightController.positionY,spotLightController.positionZ)
+			scene.children[6].target.position.set(spotLightController.targetX,spotLightController.targetY,spotLightController.targetZ)
+		}
+		else {
+			scene.children[6].color.set(null);
+			scene.children[6].intensity = 0;
+			scene.children[6].distance = 0;
+			scene.children[6].decay = 0;
+			scene.children[6].angle = Math.PI/3;
+			scene.children[6].position.set(0, 1, 0);
+			scene.children[6].target.position.set(0, 0, 0);
 		}
 		/* console.log(scene) */
     renderer.render(scene, camera);
 	}
+	
+	/* if(ambientLightController.openclose === true ){
+		scene.fog = new Fog(sceneController.fogColor,sceneController.fogNear,sceneController.fogFar)}
+	else {
+		scene.fog =null;
+	} */
+	/* console.log(scene) */
+/* 	renderer.render(scene, camera);
+} */
+
+
 }
 
 
