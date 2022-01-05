@@ -160,7 +160,7 @@ const veldt = () => {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf4f7f7);
   scene.environment = pmremGenerator.fromScene(scene).texture;
-
+	
 	const directionalLight = new THREE.DirectionalLight( 0x0c0c0c, 3);
 	directionalLight.position.set(0, 1, 0);
 	scene.add( directionalLight );
@@ -169,6 +169,7 @@ const veldt = () => {
 	const Light = new THREE.Light();
 
 	const PointLight = new THREE.PointLight(null, 0, 0);
+	RectAreaLightUniformsLib.init();
 	const RectAreaLight = new THREE.RectAreaLight(null, 0,0,0,0);
 	const SpotLight = new THREE.SpotLight(null, 0, 0, Math.PI/3, 0.0, 0);
 	scene.add( ambientLight,hemisphereLight,Light,PointLight,	RectAreaLight, SpotLight );
@@ -1316,7 +1317,8 @@ function rotateObject(carModel) {
 			scene.children[5].height = rectAreaLightLightController.height;
 			scene.children[5].power = rectAreaLightLightController.power;
 			scene.children[5].position.set(rectAreaLightLightController.positionX,rectAreaLightLightController.positionY,rectAreaLightLightController.positionZ);
-			RectAreaLightUniformsLib.init();
+			/* renderer.physicallyCorrectLights = true; */
+			
 		}
 		else {
 			scene.children[5].color.set(null);
@@ -1344,6 +1346,7 @@ function rotateObject(carModel) {
 			scene.children[6].position.set(0, 1, 0);
 			scene.children[6].target.position.set(0, 0, 0);
 		}
+		
 		/* console.log(scene) */
     renderer.render(scene, camera);
 	}
