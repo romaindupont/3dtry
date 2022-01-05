@@ -142,7 +142,8 @@ const veldt = () => {
 	let spotLightController;
 
 	const container = document.getElementById('simulateur');
-	const renderer = new THREE.WebGLRenderer( { antialias: false } );
+	const renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer.physicallyCorrectLights = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
@@ -174,11 +175,12 @@ const veldt = () => {
 	const Light = new THREE.Light();
 
 	const PointLight = new THREE.PointLight(null, 0, 0);
-	const RectAreaLight = new THREE.RectAreaLight(0x0c0c0c, 5, 4, 10);
-	RectAreaLight.position.set(- 5, 5, 5);
+	const RectAreaLight = new THREE.RectAreaLight(null, 0, 0, 0);
+/* 	const RectAreaLight = new THREE.RectAreaLight(0x0c0c0c, 5, 4, 10); */
+/* 	RectAreaLight.position.set(- 5, 5, 5); */
 	const SpotLight = new THREE.SpotLight(null, 0, 0, Math.PI/3, 0.0, 0);
 	scene.add( ambientLight,hemisphereLight,Light,PointLight,	SpotLight );
-	scene.add(new RectAreaLightHelper(RectAreaLight))
+	scene.add(RectAreaLight);
 	/* const rectLight1 = new THREE.RectAreaLight( 0xff0000, 5, 4, 10 );
 	rectLight1.position.set( - 5, 5, 5 );
 	scene.add( rectLight1 );
@@ -197,6 +199,7 @@ const veldt = () => {
 		map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.anisotropy = 5;
+		map.rotation = 70;
     map.repeat.set(10, 10);
   });
 	const carbonNormal = textureBody.load('../src/assets/textures/carbon_fibers_normal_1k.jpg');
@@ -229,7 +232,8 @@ const veldt = () => {
 		map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.anisotropy = 1;
-    map.repeat.set(60, 60);})
+    map.repeat.set(60, 60);
+	})
 	const screwDiplacement = textureBody.load('../src/assets/textures/metalVis/Metal011_1K_Displacement.jpg')
 	const screwMetalness = textureBody.load('../src/assets/textures/metalVis/Metal011_1K_Metalness.jpg')
 	const screwNormalDX = textureBody.load('../src/assets/textures/metalVis/Metal011_1K_NormalDX.jpg')
@@ -305,9 +309,8 @@ const veldt = () => {
 	const rubberChinguardMaterial = new THREE.MeshPhysicalMaterial({
 		color: 0x222222 ,side: THREE.DoubleSide, reflectivity: 0, map:rubberMap, roughnessMap:rubberRoughness,roughness:0.5, normalMap: rubberNormal, metalnessMap: rubberMetalness, metalness: 0.9
 	});
-	const bodyMaterial = new THREE.MeshPhysicalMaterial({
-		/* clearcoat: 0.3, clearcoatRoughness: 0.6, */ side: THREE.DoubleSide,/* , map:carbonBaseColor, bumpMap:carbonBump, normalMap:carbonNormal, roughnessMap:carbonRouhness, displacementMap:carbonHeight, clearcoatMap:carbonanistroAngle , 
-		clearcoatNormalMap:carbonanistroLevel, ior:3 */
+/* 	const bodyMaterial = new THREE.MeshPhysicalMaterial({
+		side: THREE.DoubleSide,
 		color: 0xffffff,
 		metalness: 0.2,
 		roughness: 0.5,
@@ -317,6 +320,20 @@ const veldt = () => {
 		normalMap: carbonNormalMap,
 		ior:1.39,
 		lightMapIntensity: 1
+	}); */
+	const bodyMaterial = new THREE.MeshPhysicalMaterial({
+		clearcoat: 0.3,
+		clearcoatRoughness: 0.6,
+		side: THREE.DoubleSide,
+		map:carbonBaseColor,
+		bumpMap:carbonBump,
+		normalMap:carbonNormal,
+		roughnessMap:carbonRouhness,
+		displacementMap:carbonHeight,
+		clearcoatMap:carbonanistroAngle , 
+		clearcoatNormalMap:carbonanistroLevel,
+		ior:3
+		
 	});
 	const AttachVisor = new THREE.MeshPhysicalMaterial({
 		color: 0x222222, side: THREE.DoubleSide, metalness: 0.6, roughness: 0.5, clearcoat: 0.6, clearcoatRoughness: 0.16, reflectivity: 0.148
@@ -615,7 +632,7 @@ const veldt = () => {
 
 	const loader = new Rhino3dmLoader();
 	loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' );
-  loader.load('../src/assets/3d/test_texture.3dm', function (gltf) {
+  loader.load('../src/assets/3d/test_full4.3dm', function (gltf) {
 		console.log(gltf)
 		const carModel = gltf;
 
@@ -752,9 +769,9 @@ function setupGui() {
 		offsety: 0,
 		formatMap: THREE.RGBAFormat,
 		anisotropy: 0,
-		repeatx: 60,
-		repeaty: 30,
-		rotation: 360,
+		repeatx: 10,
+		repeaty: 10,
+		rotation: 70,
 		centerx: -0.2,
 		centery: -0.2,
 		generateMipmaps: true,
@@ -845,7 +862,8 @@ function setupGui() {
 		positionX: 0,
 		positionY: 1,
 		positionZ: 0,
-		openclose: true,
+		openclose: false,
+		hemiIrradiance: null
 	};
 	spotLightController = {
 		color: 0xffffff,
@@ -916,24 +934,37 @@ function setupGui() {
 		"20 lm (4W)": 20,
 		"Off": 0
 	};
+	const hemiLuminousIrradiances = {
+		"0.0001 lx (Moonless Night)": 0.0001,
+		"0.002 lx (Night Airglow)": 0.002,
+		"0.5 lx (Full Moon)": 0.5,
+		"3.4 lx (City Twilight)": 3.4,
+		"50 lx (Living Room)": 50,
+		"100 lx (Very Overcast)": 100,
+		"350 lx (Office Room)": 350,
+		"400 lx (Sunrise/Sunset)": 400,
+		"1000 lx (Overcast)": 1000,
+		"18000 lx (Daylight)": 18000,
+		"50000 lx (Direct Sun)": 50000
+	};
 	const angleList = { Math1 : Math.PI/3, Math2: Math.PI/2 }
 	const gui = new GUI();
 	
 	h = gui.addFolder( 'Material shell control' ).close();
 	h.addColor(effectController, 'color').onChange( render )
-	h.add( effectController, 'metalness', 0.0, 1.0, 0.05 ).name( 'metalness' ).onChange( render );
-	h.add( effectController, 'roughness', 0.0, 1.0, 0.025 ).name( 'roughness' ).onChange( render );
-	h.add( effectController, 'clearcoat', 0.0, 1.0, 0.025 ).name( 'clearcoat' ).onChange( render );
-	h.add( effectController, 'clearcoatRoughness', 0.0, 1.0, 0.025 ).name( 'clearcoatRoughness' ).onChange( render );
+	h.add( effectController, 'metalness', 0.0, 1.0, 0.0001 ).name( 'metalness' ).onChange( render );
+	h.add( effectController, 'roughness', 0.0, 1.0, 0.0001 ).name( 'roughness' ).onChange( render );
+	h.add( effectController, 'clearcoat', 0.0, 1.0, 0.0001 ).name( 'clearcoat' ).onChange( render );
+	h.add( effectController, 'clearcoatRoughness', 0.0, 1.0, 0.0001 ).name( 'clearcoatRoughness' ).onChange( render );
 	h.add( effectController, 'ior', 1.0, 2.333, 0.025 ).name( 'ior' ).onChange( render );
-	h.add( effectController, 'lightMapIntensity', 0.0, 1000, 10 ).name( 'lightMapIntensity' ).onChange( render );
-	h.add( effectController, 'reflectivity', 0.0, 1.0, 0.025 ).name( 'reflectivity' ).onChange( render );
+	h.add( effectController, 'lightMapIntensity', 0.0, 1000, 0.1 ).name( 'lightMapIntensity' ).onChange( render );
+	h.add( effectController, 'reflectivity', 0.0, 1.0, 0.0001 ).name( 'reflectivity' ).onChange( render );
 	h.addColor(effectController, 'sheenColor').onChange( render )
-	h.add( effectController, 'sheen', 0.0, 1.0, 0.025 ).name( 'sheen' ).onChange( render );
-	h.add( effectController, 'sheenRoughness', 0.0, 1.0, 0.025 ).name( 'sheenRoughness' ).onChange( render );
-	h.add( effectController, 'transmission', 0.0, 1.0, 0.025 ).name( 'transmission' ).onChange( render );
+	h.add( effectController, 'sheen', 0.0, 1.0, 0.0001 ).name( 'sheen' ).onChange( render );
+	h.add( effectController, 'sheenRoughness', 0.0, 1.0, 0.0001 ).name( 'sheenRoughness' ).onChange( render );
+	h.add( effectController, 'transmission', 0.0, 1.0, 0.0001 ).name( 'transmission' ).onChange( render );
 	h.add( effectController, 'alphaTest', 0.0, 1.0, 0.025 ).name( 'alphaTest' ).onChange( render );
-	h.add( effectController, 'bumpScale', 0.0, 1.0, 0.025 ).name( 'bumpScale' ).onChange( render );
+	h.add( effectController, 'bumpScale', 0.0, 1.0, 0.0001 ).name( 'bumpScale' ).onChange( render );
 	h.addColor( effectController, 'emissive').onChange( render );
 	
 	blend = gui.addFolder( 'Blending' ).close();
@@ -1016,15 +1047,15 @@ function setupGui() {
 	textureImpact.add( effectController,'magFilter',magFilter).onChange( render );
 	textureImpact.add( effectController,'minFilter',minFilter).onChange( render );
 	textureImpact.add( effectController,'type',type).onChange( render );
-	textureImpact.add( effectController, 'offsetx', 0.0, 1.0, 0.025 ).name( 'offset.x' ).onChange( render );
-	textureImpact.add( effectController, 'offsety', 0.0, 1.0, 0.025 ).name( 'offset.y' ).onChange( render );
+	textureImpact.add( effectController, 'offsetx', -10.0, 10.0, 0.0001 ).name( 'offset.x' ).onChange( render );
+	textureImpact.add( effectController, 'offsety', -10.0, 10.0, 0.0001 ).name( 'offset.y' ).onChange( render );
 	textureImpact.add( effectController,'formatMap',format).onChange( render );
 	textureImpact.add( effectController, 'anisotropy', 0, 100, 1 ).name( 'anisotropy' ).onChange( render );
 	textureImpact.add( effectController, 'repeatx', 0, 200, 1 ).name( 'repeatx' ).onChange( render );
 	textureImpact.add( effectController, 'repeaty', 0, 200, 1 ).name( 'repeaty' ).onChange( render );
 	textureImpact.add( effectController, 'rotation', 0, 360, 1 ).name( 'rotation' ).onChange( render );
-	textureImpact.add( effectController, 'centerx', 0.0, 1.0, 0.025 ).name( 'centerx' ).onChange( render );
-	textureImpact.add( effectController, 'centery', 0.0, 1.0, 0.025 ).name( 'centery' ).onChange( render );
+	textureImpact.add( effectController, 'centerx', -1.0, 1.0, 0.0001 ).name( 'centerx' ).onChange( render );
+	textureImpact.add( effectController, 'centery', -1.0, 1.0, 0.0001 ).name( 'centery' ).onChange( render );
 	textureImpact.add( effectController,'generateMipmaps',[true, false]).onChange( render );
 	textureImpact.add( effectController,'premultiplyAlpha',[true, false]).onChange( render );
 	textureImpact.add( effectController,'flipY',[true, false]).onChange( render );
@@ -1032,17 +1063,17 @@ function setupGui() {
 	textureImpact.add( effectController,'encoding',encoding).onChange( render );
 
 	textureMap = gui.addFolder( 'Textures Map' ).close();
-	textureMap.add( effectController, 'clearcoatNormalScaleX', 0.0, 1.0, 0.1 ).name( 'clearcoatNormalScale.x' ).onChange( render );
-	textureMap.add( effectController, 'clearcoatNormalScaleY', 0.0, 1.0, 0.1 ).name( 'clearcoatNormalScale.y' ).onChange( render );
-	textureMap.add( effectController, 'aoMapIntensity', 0.0, 1.0, 0.1 ).name( 'aoMapIntensity' ).onChange( render );
-	textureMap.add( effectController, 'displacementScale', 0.0, 1.0, 0.1 ).name( 'displacementScale' ).onChange( render );
-	textureMap.add( effectController, 'displacementBias', 0.0, 1.0, 0.1 ).name( 'displacementBias' ).onChange( render );
+	textureMap.add( effectController, 'clearcoatNormalScaleX', 0.0, 5.0, 0.0001 ).name( 'clearcoatNormalScale.x' ).onChange( render );
+	textureMap.add( effectController, 'clearcoatNormalScaleY', 0.0, 5.0, 0.0001 ).name( 'clearcoatNormalScale.y' ).onChange( render );
+	textureMap.add( effectController, 'aoMapIntensity', 0.0, 10.0, 0.0001 ).name( 'aoMapIntensity' ).onChange( render );
+	textureMap.add( effectController, 'displacementScale', 0.0, 1.0, 0.0001 ).name( 'displacementScale' ).onChange( render );
+	textureMap.add( effectController, 'displacementBias', 0.0, 1.0, 0.0001 ).name( 'displacementBias' ).onChange( render );
 	textureMap.add( effectController, 'emissiveIntensity', 0, 100, 1 ).name( 'emissiveIntensity' ).onChange( render );
-	textureMap.add( effectController, 'envMapIntensity', 0, 100, 1 ).name( 'envMapIntensity' ).onChange( render );
+	textureMap.add( effectController, 'envMapIntensity', 0, 100, 0.1 ).name( 'envMapIntensity' ).onChange( render );
 	textureMap.add( effectController,'flatShading',[true, false]).onChange( render );
 	textureMap.add( effectController,'normalMapType',normalMapType).onChange( render );
-	textureMap.add( effectController, 'normalScaleX', 0.0, 1.0, 0.1 ).name( 'normalScale.x' ).onChange( render );
-	textureMap.add( effectController, 'normalScaleY', 0.0, 1.0, 0.1 ).name( 'normalScale.y' ).onChange( render );
+	textureMap.add( effectController, 'normalScaleX', 0.0, 5.0, 0.0001 ).name( 'normalScale.x' ).onChange( render );
+	textureMap.add( effectController, 'normalScaleY', 0.0, 5.0, 0.0001 ).name( 'normalScale.y' ).onChange( render );
 	textureMap.add( effectController, 'refractionRatio', 0, 3, 0.01 ).name( 'refractionRatio' ).onChange( render );
 	textureMap.add( effectController,'wireframe',[true, false]).onChange( render );
 	textureMap.add( effectController, 'wireframeLinewidth', 0, 100, 1 ).name( 'wireframeLinewidth' ).onChange( render );
@@ -1086,11 +1117,11 @@ function setupGui() {
 	ambientLightFolder = lightFolder.addFolder( 'Ambient Light' ).close()
 	ambientLightFolder.add( ambientLightController,'openclose',[true, false]).onChange( render );
 	ambientLightFolder.addColor(ambientLightController, 'color').onChange( render );
-	ambientLightFolder.add( ambientLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	ambientLightFolder.add( ambientLightController, 'intensity', 0, 100, 0.0001 ).onChange( render );
 	directionalLightFolder = lightFolder.addFolder( 'Directional Light' ).close()
 	directionalLightFolder.add( directionalLightController,'openclose',[true, false]).onChange( render );
 	directionalLightFolder.addColor(directionalLightController, 'color').onChange( render );
-	directionalLightFolder.add( directionalLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	directionalLightFolder.add( directionalLightController, 'intensity', 0, 100, 0.0001 ).onChange( render );
 	directionalLightFolder.add( directionalLightController,'castShadow',[true, false]).onChange( render );
 	directionalLightFolder.add( directionalLightController, 'positionX', -1000.0, 100.0, 0.1  ).onChange( render );
 	directionalLightFolder.add( directionalLightController, 'positionY', -1000.0, 100.0, 0.1  ).onChange( render );
@@ -1103,35 +1134,36 @@ function setupGui() {
 	hemisphereLightFolder.add( hemisphereLightController,'openclose',[true, false]).onChange( render );
 	hemisphereLightFolder.addColor(hemisphereLightController, 'skyColor').onChange( render );
 	hemisphereLightFolder.addColor(hemisphereLightController, 'groundColor').onChange( render );
-	hemisphereLightFolder.add( hemisphereLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	hemisphereLightFolder.add( hemisphereLightController, 'intensity', 0, 100, 0.0001 ).onChange( render );
 	hemisphereLightFolder.add( hemisphereLightController, 'positionX',-1000.0, 1000.0, 0.1  ).onChange( render );
 	hemisphereLightFolder.add( hemisphereLightController, 'positionY', -1000.0, 1000.0, 0.1  ).onChange( render );
 	hemisphereLightFolder.add( hemisphereLightController, 'positionZ', -1000.0, 1000.0, 0.1  ).onChange( render );
 	LightFolder = lightFolder.addFolder( 'Light' ).close();
 	LightFolder.add( LightController,'openclose',[true, false]).onChange( render );
 	LightFolder.addColor(LightController, 'color').onChange( render );
-	LightFolder.add( LightController, 'intensity', 0, 100, 1 ).onChange( render );
+	LightFolder.add( LightController, 'intensity', 0, 100, 0.0001 ).onChange( render );
 	pointLightFolder = lightFolder.addFolder( 'Point Light' ).close()
 	pointLightFolder.add( pointLightController,'openclose',[true, false]).onChange( render );
 	pointLightFolder.addColor(pointLightController, 'color').onChange( render );
-	pointLightFolder.add( pointLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	pointLightFolder.add( pointLightController, 'intensity', 0, 100, 0.0001 ).onChange( render );
 	pointLightFolder.add( pointLightController, 'distance', 0.0, 100.0, 0.1 ).onChange( render );
 	pointLightFolder.add( pointLightController, 'decay', 0, 100, 1 ).onChange( render );
 	pointLightFolder.add( effectController,'power',bulbLuminousPowers).onChange( render );
 	rectAreaLightFolder = lightFolder.addFolder( 'Rect Area Light' ).close()
 	rectAreaLightFolder.add( rectAreaLightLightController,'openclose',[true, false]).onChange( render );
 	rectAreaLightFolder.addColor(rectAreaLightLightController, 'color').onChange( render );
-	rectAreaLightFolder.add( rectAreaLightLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController, 'intensity', 0, 100, 0.0001 ).onChange( render );
 	rectAreaLightFolder.add( rectAreaLightLightController, 'width', 0, 1000, 1 ).onChange( render );
 	rectAreaLightFolder.add( rectAreaLightLightController, 'height', 0, 1000, 1 ).onChange( render );
 	rectAreaLightFolder.add( rectAreaLightLightController,'power',bulbLuminousPowers).onChange( render );
+	rectAreaLightFolder.add( rectAreaLightLightController, 'hemiIrradiance',hemiLuminousIrradiances).onChange( render );
 	rectAreaLightFolder.add( rectAreaLightLightController,'positionX', -1000.0, 1000.0, 0.1 ).onChange( render );
 	rectAreaLightFolder.add( rectAreaLightLightController,'positionY', -1000, 1000.0, 0.025 ).onChange( render );
 	rectAreaLightFolder.add( rectAreaLightLightController,'positionZ',-1000.0, 1000.0, 0.025 ).onChange( render );
 	spotLightFolder = lightFolder.addFolder( 'Spot Light' ).close()
 	spotLightFolder.add( spotLightController,'openclose',[true, false]).onChange( render );
 	spotLightFolder.addColor(spotLightController, 'color').onChange( render );
-	spotLightFolder.add( spotLightController, 'intensity', 0, 100, 1 ).onChange( render );
+	spotLightFolder.add( spotLightController, 'intensity', 0, 100, 0.0001 ).onChange( render );
 	spotLightFolder.add( spotLightController, 'distance', 0.0, 10000, 0.1 ).onChange( render );
 	spotLightFolder.add( spotLightController, 'decay', 0, 100, 1 ).onChange( render );
 	spotLightFolder.add( spotLightController,'angle',angleList).onChange( render );
@@ -1251,6 +1283,7 @@ function rotateObject(carModel) {
 
 		//Scene
 		scene.background.set(sceneController.sceneBg);
+	
 		if (sceneController.fogYN === true ){
 			scene.fog = new Fog(sceneController.fogColor,sceneController.fogNear,sceneController.fogFar);
 		}
@@ -1258,6 +1291,7 @@ function rotateObject(carModel) {
 			scene.fog =null;
 		}
 		if (ambientLightController.openclose === true ){
+			console.log(scene)
 			scene.children[1].color.set(ambientLightController.color);
 			scene.children[1].intensity = ambientLightController.intensity;
 		}
@@ -1284,13 +1318,16 @@ function rotateObject(carModel) {
 			scene.children[2].color.set(hemisphereLightController.skyColor);
 			scene.children[2].groundColor.set(hemisphereLightController.groundColor);
 			scene.children[2].intensity = hemisphereLightController.intensity;
+			/* scene.children[2].position.set(0, 1, 0); */
 			scene.children[2].position.set(hemisphereLightController.positionX,hemisphereLightController.positionY,hemisphereLightController.positionZ);
+			scene.children[2].lookAt(new THREE.Vector3())
 		}
 		else {
 			scene.children[2].color.set(null);
 			scene.children[2].groundColor.set(null);
 			scene.children[2].intensity = 0;
 			scene.children[2].position.set(0, 1, 0);
+			scene.children[2].lookAt(new THREE.Vector3())
 		}
 
 		if (LightController.openclose === true ){
@@ -1317,12 +1354,15 @@ function rotateObject(carModel) {
 			scene.children[4].power = 0;
 		}
 		if (rectAreaLightLightController.openclose === true ){
+			console.log(scene)
 			scene.children[5].color.set(rectAreaLightLightController.color);
-			scene.children[5].intensity = rectAreaLightLightController.intensity / Math.pow( 0.02, 2.0 );
+			scene.children[5].emissiveIntensity  = rectAreaLightLightController.intensity / Math.pow( 0.02, 2.0 );
 		 	scene.children[5].width = rectAreaLightLightController.width;
 			scene.children[5].height = rectAreaLightLightController.height;
 			scene.children[5].power = rectAreaLightLightController.power;
+			scene.children[5].intensity = rectAreaLightLightController.hemiIrradiance;
 			scene.children[5].position.set(rectAreaLightLightController.positionX,rectAreaLightLightController.positionY,rectAreaLightLightController.positionZ);
+			scene.children[5].lookAt(new THREE.Vector3())
 			RectAreaLightUniformsLib.init();
 		}
 		else {
@@ -1331,6 +1371,7 @@ function rotateObject(carModel) {
 			scene.children[5].width = 0;
 			scene.children[5].height = 0;
 			scene.children[5].position.set(0,1,0)
+			scene.children[5].lookAt(new THREE.Vector3())
 		}
 		if (spotLightController.openclose === true ){
 			scene.children[6].color.set(spotLightController.color);
@@ -1366,6 +1407,7 @@ function rotateObject(carModel) {
 
 
 }
+// CHANGEMENT FX
 const veldtOBJ = () => {
 	let effectController;
 	let sceneController;
@@ -2443,6 +2485,7 @@ function rotateObject(carModel) {
 
 		//Scene
 		scene.background.set(sceneController.sceneBg);
+		console.log(scene)
 		if (sceneController.fogYN === true ){
 			scene.fog = new Fog(sceneController.fogColor,sceneController.fogNear,sceneController.fogFar);
 		}
@@ -2548,4 +2591,4 @@ function rotateObject(carModel) {
 
 // Append heading node to the DOM
 const app = document.querySelector('#root')
-app.append(time,veldtOBJ(),menuOpen(),menuElement())
+app.append(time,/* veldtOBJ(), */ veldt(),menuOpen(),menuElement())
