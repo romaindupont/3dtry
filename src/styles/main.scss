@@ -8,7 +8,10 @@ html {
 #root {
 	display: none;
 }
-
+li {
+	text-decoration: none;
+	list-style: none;
+}
 body {
 	display: flex;
 	flex-direction: column;
@@ -24,6 +27,7 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
+	border-top: 10px solid #233658;
 }
 
 
@@ -52,9 +56,59 @@ body {
 	border-radius: 15px;
 	position: absolute;
 	top: 85%;
-
+	display: none;
+}
+.casque, .menton, .visiere {
+	width: 100vw;
+	height: 500px;
+	z-index: 1;
+	background-color: white;
+	border-radius: 15px;
+	position: absolute;
+	top: 85%;
+	border-top: 1px solid #233658;
+	display: flex;
+	justify-content: center;
 }
 
+span.titreOnglet {
+	display: block;
+	/* margin: 0 auto; */
+	color: #233658;
+	text-transform: uppercase;
+	position: absolute;
+	top: -25px;
+	background: white;
+	padding: 1rem;
+	border-radius: 19px;
+	border-top: 1px solid #233658;
+	/* border-left: 1px solid #233658; */
+	/* border-right: 1px solid #233658; */
+}
+.titreOnglet:before {
+	content: '';
+	background: #f1f1f2;
+	width: 26px;
+	position: absolute;
+	bottom: 27px;
+	height: 17px;
+	border-right: 1px solid;
+	left: -22px;
+	border-radius: 0 0 50% 0;
+	box-shadow: 14px 4px 0 #fff;
+}
+.titreOnglet::after {
+	content: '';
+	background: #f1f1f2;
+	width: 26px;
+	position: absolute;
+	bottom: 27px;
+	height: 17px;
+	border-left: 1px solid;
+	right: -22px;
+	box-shadow: -13px 15px 0 #fff;
+	border-radius: 0 50% 0;
+}
 .barreElement {
 	display: block;
 	background-color: rgb(179, 176, 176);
@@ -288,12 +342,8 @@ input[type="color"]::-webkit-color-swatch {
 	stroke-width:10;
 	stroke:#233658;
   fill:none;
-	/* stroke-dasharray: 10 15; */
 	animation: svgAnime 6s 100ms forwards ease-in;
 }
-/* svg {
-	fill: transparent;
-} */
 @keyframes svgAnime {
 	0% {
 		stroke-dasharray: 10 15;
@@ -305,5 +355,135 @@ input[type="color"]::-webkit-color-swatch {
 	100% {
 		stroke-dasharray: 0 0;
 		fill: #233658;
+	}
+}
+ .menuWebsite {
+	width: 50px;
+	height: 50px;
+	background-color: #233658;
+	border-radius: 50%;
+	position: absolute;
+	cursor: pointer;
+ }
+ .barre {
+	background: white;
+	height: 2px;
+	width: 70%;
+	position: absolute;
+	left: 8px;
+ }
+ .barreMenu1 {
+	top: 15px;
+ }
+ .barreMenu2 {
+	top: 23px;
+}
+.barreMenu3 {
+	bottom: 17px;
+}
+.menuCache {
+	background: white;
+	width: 20vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: -20vw;
+	border-right: 1px solid #f1f1f2;
+	z-index: 2;
+}
+.link {
+	cursor: pointer;
+	color: #233658;
+	text-transform: uppercase;
+	margin-bottom: 2rem;
+	font-weight: bold;
+}
+
+img.logoVeldt {
+	width: 15%;
+}
+
+.logoComplet {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-bottom: 3rem;
+	& > p {
+		color: #233658;
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin-left: 5px;
+		margin-right: 2rem;
+	}
+}
+.cross {
+	margin: auto 0;
+	cursor: pointer;
+	&--1 {
+		background: #233658;
+    height: 2px;
+    width: 25px;
+    display: block;
+    transform: rotate(45deg);
+	}
+	&--2 {
+		background: #233658;
+    height: 2px;
+    width: 25px;
+    display: block;
+    transform: rotate(140deg);
+	}
+}
+
+.config {
+	color: #8f9194;
+	text-transform: uppercase;
+	position: absolute;
+	left: 62px;
+	top: 14px;
+}
+img.logo {
+	width: 7%;
+	position: absolute;
+	left: 70px;
+}
+
+.headerSimul {
+	position: relative;
+	top: 15px;
+	left: 10px;
+	display: flex;
+}
+
+.information {
+	color: #8f9194;
+	text-transform: uppercase;
+	position: absolute;
+	top: 50px;
+	width: 180px;
+	text-align: center;
+}
+.price {
+	color: #233658;
+	font-size: 1.7rem;
+	font-weight: bold;
+	margin-right: 2rem;
+}
+.basket {
+	position: absolute;
+	top: 15px;
+	right: 90px;
+	display: flex;
+	& > a {
+    color: white;
+    background-color: #233658;
+    width: 100px;
+    border-radius: 25px;
+    text-decoration: none;
+    text-transform: uppercase;
+    height: 25px;
+    margin: auto;
+    text-align: center;
+    padding: 0.4rem;
 	}
 }
