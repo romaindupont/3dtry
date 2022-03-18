@@ -670,7 +670,7 @@ const veldt = () => {
 
 	const loader = new Rhino3dmLoader();
 	loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' );
-  loader.load('../src/assets/3d/test_full4.3dm', function (gltf) {
+	/* loader.load('../src/assets/3d/test_full4.3dm', function (gltf) {
 		console.log(gltf)
 		const carModel = gltf;
 
@@ -682,7 +682,6 @@ const veldt = () => {
 		carModel.children[4].material = AttachVisor;//attache visior
 		carModel.children[33].material = AttachVisor;//protection visor droit
 		carModel.children[34].material = AttachVisor;//protection visor gauche
-	/* carModel.children[25].material = bodyMaterialTry; */
 		//chinguard
 		carModel.children[18].material = chainguardMaterial;
 		carModel.children[18].position.set(0,0,1);
@@ -727,21 +726,12 @@ const veldt = () => {
 		carModel.children[11].material = screwMaterialTop;//trou gauche visiere
 		carModel.children[19].visible = false;
 		carModel.children[20].visible = false;
-		/* 
-		carModel.children[5].visible = false;//
-		carModel.children[6].visible = false;//
-		carModel.children[7].visible = false;//
-		carModel.children[8].visible = false;//
-		carModel.children[11].visible = false;//
-		carModel.children[19].visible = false;//
-		carModel.children[20].visible = false;//
-		*/
 		carModel.rotation.z += 1
-    scene.add(carModel);
+		scene.add(carModel);
 		rotateObject(carModel)
 		
-  },
-
+	},
+	
   function (xhr) {
     console.log((xhr.loaded / xhr.total * 100) + '% loaded');
   }, 
@@ -749,7 +739,7 @@ const veldt = () => {
   function (error) {
     console.log('An error happened = ', error);
   }
-);
+); */
 
 function rotateObject(carModel) {
 	/* setInterval(()=>carModel.rotation.z += 0.001, 10)	 */
@@ -778,4 +768,4 @@ function rotateObject(carModel) {
 
 // Append heading node to the DOM
 const app = document.querySelector('#root')
-app.append(time,/* veldtOBJ(), */ veldt(),menuOpen(),menuElement(), menuSite())
+app.append(/* time ,*//* veldtOBJ(), */ veldt(),menuOpen(),menuElement(), menuSite())
