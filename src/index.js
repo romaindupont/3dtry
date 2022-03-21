@@ -19,15 +19,33 @@ const menuSite = () => {
 	const menuCache = document.querySelector('.menuCache');
 	const menuLink1 = document.querySelector('.link:nth-child(1)');
 	const menuMark1 = document.querySelector('.menuMark1');
+	const returnToMenu = document.querySelector('.returnToMenu');
+	const upDown = document.querySelector('.upDown');
 	clicMenu.addEventListener('click', () => {
 		menuCache.style.left = '0px';
 	})
 	const cross = document.querySelector('.cross');
 	cross.addEventListener('click', () => {
 		menuCache.style.left = '-20vw';
+		menuMark1.style.left = '-30vw';
 	})
 	menuLink1.addEventListener('click', () => {
 		menuMark1.style.left = '20vw';
+	})
+	returnToMenu.addEventListener('click', () => {
+		menuMark1.style.left = '-30vw';
+	})
+	upDown.addEventListener('click', () => {
+		const sdTabs = document.querySelector('.sd-tabs');
+		const menuEtape = document.querySelector('.menuEtape');
+		if(document.querySelector('.openChoiceMenu')) {
+			sdTabs.classList.remove("openChoiceMenu")
+			menuEtape.style.display = 'none'
+		}
+		else {
+			sdTabs.classList.add("openChoiceMenu")
+			menuEtape.style.display = 'flex'
+		}
 	})
 }
 
