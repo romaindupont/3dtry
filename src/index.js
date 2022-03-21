@@ -17,12 +17,17 @@ const time = setTimeout(disparition, 8000);
 const menuSite = () => {
 	const clicMenu = document.querySelector('.menuWebsite');
 	const menuCache = document.querySelector('.menuCache');
+	const menuLink1 = document.querySelector('.link:nth-child(1)');
+	const menuMark1 = document.querySelector('.menuMark1');
 	clicMenu.addEventListener('click', () => {
 		menuCache.style.left = '0px';
 	})
 	const cross = document.querySelector('.cross');
 	cross.addEventListener('click', () => {
 		menuCache.style.left = '-20vw';
+	})
+	menuLink1.addEventListener('click', () => {
+		menuMark1.style.left = '20vw';
 	})
 }
 
