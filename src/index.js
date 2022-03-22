@@ -21,6 +21,7 @@ const menuSite = () => {
 	const menuMark1 = document.querySelector('.menuMark1');
 	const returnToMenu = document.querySelector('.returnToMenu');
 	const upDown = document.querySelector('.upDown');
+	const eyes = document.querySelector('.eyesHelmet');
 	clicMenu.addEventListener('click', () => {
 		menuCache.style.left = '0px';
 	})
@@ -44,7 +45,15 @@ const menuSite = () => {
 		}
 		else {
 			sdTabs.classList.add("openChoiceMenu")
-			menuEtape.style.display = 'flex'
+			/* menuEtape.style.display = 'flex' */
+		}
+	})
+	eyes.addEventListener('click', () => {
+		if(eyes.src.includes('oeil_on.svg')) {
+			eyes.src='../src/images/oeil_off.svg';
+		}
+		else {
+			eyes.src='../src/images/oeil_on.svg';
 		}
 	})
 }
