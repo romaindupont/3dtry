@@ -22,6 +22,150 @@ const menuSite = () => {
 	const returnToMenu = document.querySelector('.returnToMenu');
 	const upDown = document.querySelector('.upDown');
 	const eyes = document.querySelector('.eyesHelmet');
+	const menuEtapes = document.querySelector('.menuEtapesLogo');
+	const tabOne = document.getElementById('tabone');
+	const tabTwo = document.getElementById('tabtwo');
+	const tabThree = document.getElementById('tabthree');
+	const title = document.querySelector('.elementPicker');
+	
+	let arrayHelmetStep = [
+		'Aérations',
+		'Vis et rivets',
+		'Motifs',
+		'Couleur principal',
+		'Couleur du Motif',
+		'Vernis',
+		'Numéro droite',
+		'Numéro gauche',
+		'Numéro arrière',
+		'Logo',
+		'Intérieur',
+		'Jonc',
+		'Pièces métalliques',
+		'Tirette Double-D',
+		'Gravure',
+		'Taille et certifications'
+	];
+	let arrayChinStep = [
+		'Aérations',
+		'Vis et rivets',
+		'Couleur principal',
+		'Couleur du Motif',
+		'Vernis',
+		'Intérieur',
+		'Jonc',
+		'Pièces métalliques'
+	];
+	let arrayVisorStep = [];
+	const clicGauche = document.querySelector('.arrow--left');
+	const clicDroit = document.querySelector('.arrow--right');
+	
+	tabOne.addEventListener('change', () => {
+		let realI;
+		let i = 0;
+		if(tabOne.checked) {
+			realI = i+1;
+			let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+			title.innerHTML = arrayHelmetStep[i] + text;
+			clicGauche.addEventListener('click', () => {
+				i -= 1;
+				if (i === -1) {
+					i = 15;
+					realI = i+1;
+					let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+					return title.innerHTML = arrayHelmetStep[i] + text, HelmetPicker();
+				}
+				else {
+					realI = i+1;
+					let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+					return title.innerHTML = arrayHelmetStep[i] + text, HelmetPicker();
+				}
+			})
+			clicDroit.addEventListener('click', () => {
+				i += 1;
+				if (i === 16) {
+					i = 0;
+					realI = i+1;
+					let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+					return title.innerHTML = arrayHelmetStep[i] + text, HelmetPicker();
+				}
+				else {
+					realI = i+1;
+					let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+					return title.innerHTML = arrayHelmetStep[i] + text, HelmetPicker();
+				}
+			})
+		
+		}
+	})
+	tabTwo.addEventListener('change', () => {
+		let realI;
+		let i = 0;
+		if(tabTwo.checked) {
+			realI = i+1;
+			let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+			title.innerHTML = arrayChinStep[i] + text;
+			clicGauche.addEventListener('click', () => {
+				i -= 1;
+				if (i === -1) {
+					i = 7;
+					realI = i+1;
+					let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+					return title.innerHTML = arrayChinStep[i] + text;
+				}
+				else {
+					realI = i+1;
+					let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+					return title.innerHTML = arrayChinStep[i] + text;
+				}
+			})
+			clicDroit.addEventListener('click', () => {
+				i += 1;
+				if (i === 8) {
+					i = 0;
+					realI = i+1;
+					let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+					return title.innerHTML = arrayChinStep[i] + text;
+				}
+				else {
+					realI = i+1;
+					let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+					return title.innerHTML = arrayChinStep[i] + text;
+				}
+			})
+		}
+	})
+	tabThree.addEventListener('change', () => {
+		let realI;
+		let i = 0;
+		if(tabThree.checked) {
+			title.textContent = 'tabThree'
+			clicGauche.addEventListener('click', () => {
+				i -= 1;
+				if (i === -1) {
+					i = 0;
+					realI = i+1;
+					return title.textContent = arrayVisorStep[i] + '  ' + realI + '/'+ arrayVisorStep.length;
+				}
+				else {
+					realI = i+1;
+					return title.textContent = arrayVisorStep[i] + '  ' + realI + '/'+ arrayVisorStep.length;
+				}
+			})
+			clicDroit.addEventListener('click', () => {
+				i += 1;
+				if (i === 0) {
+					i = 0;
+					realI = i+1;
+					return title.textContent = arrayVisorStep[i] + '  ' + realI + '/'+ arrayVisorStep.length;
+				}
+				else {
+					realI = i+1;
+					return title.textContent = arrayVisorStep[i] + '  ' + realI + '/'+ arrayVisorStep.length;
+				}
+			})
+		}
+	})
 	clicMenu.addEventListener('click', () => {
 		menuCache.style.left = '0px';
 	})
@@ -38,14 +182,109 @@ const menuSite = () => {
 	})
 	upDown.addEventListener('click', () => {
 		const sdTabs = document.querySelector('.sd-tabs');
-		const menuEtape = document.querySelector('.menuEtape');
+		const info = document.querySelector('#info');	
 		if(document.querySelector('.openChoiceMenu')) {
-			sdTabs.classList.remove("openChoiceMenu")
-			menuEtape.style.display = 'none'
+			sdTabs.classList.remove("openChoiceMenu");
+			info.style.display = 'none';
 		}
 		else {
-			sdTabs.classList.add("openChoiceMenu")
-			/* menuEtape.style.display = 'flex' */
+			sdTabs.classList.add("openChoiceMenu");
+			info.style.display = 'flex';
+			let i = 0;
+			let realI;
+			if(tabOne.checked) {
+				realI = i+1;
+				let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+				title.innerHTML = arrayHelmetStep[i] + text;
+				clicGauche.addEventListener('click', () => {
+					i -= 1;
+					if (i === -1) {
+						i = 15;
+						realI = i+1;
+						let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+						return title.innerHTML = arrayHelmetStep[i] + text, HelmetPicker();
+					}
+					else {
+						realI = i+1;
+						let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+						return title.innerHTML = arrayHelmetStep[i] + text , HelmetPicker();
+					}
+				})
+				clicDroit.addEventListener('click', () => {
+					i += 1;
+					if (i === 16) {
+						i = 0;
+						realI = i+1;
+						let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+						return title.innerHTML = arrayHelmetStep[i] + text, HelmetPicker();
+					}
+					else {
+						realI = i+1;
+						let text = "<span class='number'>" + realI + '/'+ arrayHelmetStep.length + "</span>"
+						return title.innerHTML = arrayHelmetStep[i] + text, HelmetPicker();
+					}
+				})
+			}
+			if(tabTwo.checked) {
+				realI = i+1;
+				let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+				title.innerHTML = arrayChinStep[i] + text;
+				clicGauche.addEventListener('click', () => {
+					i -= 1;
+					if (i === -1) {
+						i = 7;
+						realI = i+1;
+						let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+						return title.innerHTML = arrayChinStep[i] + text;
+					}
+					else {
+						realI = i+1;
+						let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+						return title.innerHTML = arrayChinStep[i] + text;
+					}
+				})
+				clicDroit.addEventListener('click', () => {
+					i += 1;
+					if (i === 8) {
+						i = 0;
+						realI = i+1;
+						let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+						return title.innerHTML = arrayChinStep[i] + text;
+					}
+					else {
+						realI = i+1;
+						let text = "<span class='number'>" + realI + '/'+ arrayChinStep.length + "</span>"
+						return title.innerHTML = arrayChinStep[i] + text;
+					}
+				})
+			}
+			if(tabThree.checked) {
+				title.textContent = 'tabThree'
+				clicGauche.addEventListener('click', () => {
+					i -= 1;
+					if (i === -1) {
+						i = 0;
+						realI = i+1;
+						return title.textContent = arrayVisorStep[i] + '  ' + realI + '/'+ arrayVisorStep.length;
+					}
+					else {
+						realI = i+1;
+						return title.textContent = arrayVisorStep[i] + '  ' + realI + '/'+ arrayVisorStep.length;
+					}
+				})
+				clicDroit.addEventListener('click', () => {
+					i += 1;
+					if (i === 0) {
+						i = 0;
+						realI = i+1;
+						return title.textContent = arrayVisorStep[i] + '  ' + realI + '/'+ arrayVisorStep.length;
+					}
+					else {
+						realI = i+1;
+						return title.textContent = arrayVisorStep[i] + '  ' + realI + '/'+ arrayVisorStep.length;
+					}
+				})
+			}
 		}
 	})
 	eyes.addEventListener('click', () => {
@@ -56,51 +295,43 @@ const menuSite = () => {
 			eyes.src='../src/images/oeil_on.svg';
 		}
 	})
+	menuEtapes.addEventListener('click', () => {
+		const openMenu = document.querySelector('.menuEtape');
+		openMenu.style.display="flex";
+/* 		openMenu.style.position = 'relative'; */
+		openMenu.style.top='-55%';
+	})
+	const crossEtape = document.querySelector('.crossEtape');
+	crossEtape.addEventListener('click', () => {
+		const menuEtape = document.querySelector('.menuEtape');
+		menuEtape.style.display = 'none';
+	})
 }
 
 const menuOpen = () => {
-	const menuClick = document.querySelector('.barreElement');
-	menuClick.addEventListener('click', () => {
-    const menu = document.querySelector('#info');
+	const sdTabs = document.querySelector('.sd-tabs');
+	sdTabs.addEventListener('click', () => {
+    const menu = document.getElementById('info');
     menu.classList.toggle('menu--open');
   })
 }
-const menuElement = () => {
-	let arrayElement = [
-		'Visor',
-		'Shell',
-		'Chinguard',
-		'Screw',
-		'Rubber'
-	]
-	const clicGauche = document.querySelector('.arrow--left');
-	const clicDroit = document.querySelector('.arrow--right');
-	let i = 0;
-
-	clicGauche.addEventListener('click', () => {
-    const title = document.querySelector('.elementPicker');
-		i -= 1;
-		if (i === -1) {
-			i = 4;
-			return title.textContent = arrayElement[i] , VisorPicker()
-		}
-		else {
-			return title.textContent = arrayElement[i] , VisorPicker()
-		}
-  })
-	clicDroit.addEventListener('click', () => {
-    const title = document.querySelector('.elementPicker');
-		i += 1;
-		if (i === 5) {
-			i = 0;
-			return title.textContent = arrayElement[i] , VisorPicker()
-		}
-		else {
-			return title.textContent = arrayElement[i] , VisorPicker()
-		}
-  })
-
+const HelmetPicker = () => {
+	const title = document.querySelector('.elementPicker');
+	const aeration = document.querySelector('.aeration');
+	switch (title.textContent) {
+		case 'Element':
+			aeration.style.display = 'none';
+			break;
+		case 'Aération':
+			aeration.style.display = 'block';
+			break;
+		default:
+			aeration.style.display = 'none';
+			break;
+	}
+	
 }
+
 const VisorPicker = () => {
 	const title = document.querySelector('.elementPicker');
 	const visor = document.querySelector('.pickerVisor');
@@ -108,6 +339,7 @@ const VisorPicker = () => {
 	const chainguard = document.querySelector('.pickerChinguard');
 	const screw = document.querySelector('.pickerScrew');
 	const rubber = document.querySelector('.pickerRubber');
+	const aeration = document.querySelector('.aeration');
 	switch (title.textContent) {
 		case 'Visor':
 			visor.style.display = 'block';
@@ -115,6 +347,7 @@ const VisorPicker = () => {
 			screw.style.display = 'none';
 			chainguard.style.display = 'none';
 			rubber.style.display = 'none';
+			aeration.style.display = 'none';
 			break;
 		case 'Shell':
 			shell.style.display = 'block';
@@ -122,6 +355,7 @@ const VisorPicker = () => {
 			screw.style.display = 'none';
 			chainguard.style.display = 'none';
 			rubber.style.display = 'none';
+			aeration.style.display = 'none';
 			break;
 		case 'Chinguard':
 			chainguard.style.display = 'block';
@@ -129,6 +363,7 @@ const VisorPicker = () => {
 			shell.style.display = 'none';
 			screw.style.display = 'none';
 			rubber.style.display = 'none';
+			aeration.style.display = 'none';
 			break;
 		case 'Screw':
 			screw.style.display = 'block';
@@ -136,6 +371,7 @@ const VisorPicker = () => {
 			shell.style.display = 'none';
 			chainguard.style.display = 'none';
 			rubber.style.display = 'none';
+			aeration.style.display = 'none';
 			break;
 		case 'Rubber':
 			rubber.style.display = 'block';
@@ -143,6 +379,7 @@ const VisorPicker = () => {
 			shell.style.display = 'none';
 			chainguard.style.display = 'none';
 			screw.style.display = 'none';
+			aeration.style.display = 'none';
 			break;	
 		case 'Element':
 			visor.style.display = 'none';
@@ -150,6 +387,15 @@ const VisorPicker = () => {
 			chainguard.style.display = 'none';
 			screw.style.display = 'none';
 			rubber.style.display = 'none';
+			aeration.style.display = 'none';
+			break;
+		case 'Aération':
+			visor.style.display = 'none';
+			shell.style.display = 'none';
+			chainguard.style.display = 'none';
+			screw.style.display = 'none';
+			rubber.style.display = 'none';
+			aeration.style.display = 'block';
 			break;
 		default:
 			visor.style.display = 'none';
@@ -157,6 +403,7 @@ const VisorPicker = () => {
 			chainguard.style.display = 'none';
 			screw.style.display = 'none';
 			rubber.style.display = 'none';
+			aeration.style.display = 'none';
 			break;
 	}
 	
@@ -800,4 +1047,4 @@ function rotateObject(carModel) {
 
 // Append heading node to the DOM
 const app = document.querySelector('#root')
-app.append(/* time ,*//* veldtOBJ(), */ veldt(),menuOpen(),menuElement(), menuSite())
+app.append(/* time ,*//* veldtOBJ(), */ veldt(),menuOpen(),/* menuElement(), */ menuSite())

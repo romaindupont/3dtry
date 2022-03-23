@@ -172,6 +172,7 @@ span.titreOnglet {
 
 .menu--open {
 	top: 50%;
+	flex-direction: column;
 }
 
 .colorPickerTitle {
@@ -192,48 +193,7 @@ span.titreOnglet {
 	text-align: center;
 	color: #183679;
 	font-family: 'Montserrat', sans-serif;
-	text-transform:capitalize;
-}
-.left {
-	width: 20px;
-	height: 2px;
-	background: #183679;
-	display: block;
-	cursor: pointer;
-	margin: auto;
-	position: relative;
-	transform: rotate(-45deg);
-	&::after {
-		content: '';
-		width: 20px;
-		height: 2px;
-		background: #183679;
-		display: block;
-		cursor: pointer;
-		margin: auto;
-		transform: translate(-10px, 10px) rotate(90deg);
-	}
-}
-
-.right {
-	width: 20px;
-	height: 2px;
-	background: #183679;
-	display: block;
-	cursor: pointer;
-	margin: auto;
-	transform: rotate(45deg);
-	position: relative;
-	&::after {
-		content: '';
-		width: 20px;
-		height: 2px;
-		background: #183679;
-		display: block;
-		cursor: pointer;
-		margin: auto;
-		transform: translate(10px, 10px) rotate(-90deg);
-	}
+	text-transform:uppercase;
 }
 
 .pickerVisor, .pickerShell, .pickerChinguard, .pickerScrew, .pickerRubber {
@@ -242,16 +202,64 @@ span.titreOnglet {
 
 .arrow--left {
 	cursor: pointer;
-	width: 50px;
-	height: 68px;
+	width: 35px;
+	height: 35px;
 	display: flex;
+	border: 1px solid #233658;
+	border-radius: 50%;
+	justify-content: center;
+	align-items: center;
+	&::before	{
+		content: '';
+		width: 15px;
+		height: 2px;
+		background: #233658;
+		display: block;
+		cursor: pointer;
+		position: absolute;
+		transform: translate3d(0px, -4px, 10px) rotate(-30deg);
+	}
+	&::after {
+		content: '';
+		width: 15px;
+		height: 2px;
+		background: #233658;
+		display: block;
+		cursor: pointer;
+		position: absolute;
+		transform: translate3d(0px, 3px, 10px) rotate(30deg);
+	}
 }
 
 .arrow--right {
 	cursor: pointer;
-	width: 50px;
-	height: 68px;
+	width: 35px;
+	height: 35px;
 	display: flex;
+	border: 1px solid #233658;
+	border-radius: 50%;
+	justify-content: center;
+	align-items: center;
+	&::before	{
+		content: '';
+		width: 15px;
+		height: 2px;
+		background: #233658;
+		display: block;
+		cursor: pointer;
+		position: absolute;
+		transform: translate3d(0px, -4px, 10px) rotate(30deg);
+	}
+	&::after {
+		content: '';
+		width: 15px;
+		height: 2px;
+		background: #233658;
+		display: block;
+		cursor: pointer;
+		position: absolute;
+		transform: translate3d(0px, 3px, 10px) rotate(-30deg);
+	}
 }
 
 .pickerVisorDisplay,.pickerVisorColor,.shellMaterial,.shellColor,
@@ -906,7 +914,7 @@ img.logo {
 		transform: rotate(180deg);
 	}
 }
-svg {
+#onglet {
 	position: absolute;
 	top: -35px;
 	width: 165px;
@@ -922,7 +930,9 @@ svg {
 	background: #fff;
 	flex-direction: row;
 	width: 100%;
-	height: 100%;
+	position: relative;
+	z-index: 20;
+	/* height: 100%; */
 }
 
 .matiereimage {
@@ -958,8 +968,86 @@ ul.menuEtapeUl > li {
 	z-index: 10;
 }
 #eyes {
-		width: 15%;
-	}
+	width: 15%;
+}
 .eyesOff {
 	fill: #939598 !important;
+}
+
+#export {
+	width: 25px;
+	height: 30px;
+}
+
+.exportButton {
+	position: absolute;
+	top: -10px;
+	right: 10px;
+}
+#etapeLogo {
+	width: 20px;
+	height: 20px;
+}
+.menuEtapesLogo {
+	position: absolute;
+	top: 40px;
+	left: 35px;
+	width: 35px;
+	height: 35px;
+	border: 1px solid #233658;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.crossEtape {
+	margin: auto 0;
+	cursor: pointer;
+	position: absolute;
+	top: 40px;
+	right: 40px;
+	border: 1px solid #233658;
+	border-radius: 50%;
+	width: 35px;
+	height: 35px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	&:before {
+		content: '';
+		background: #233658;
+    height: 2px;
+    width: 25px;
+    position: absolute;
+    transform: rotate(45deg);
+	}
+	&:after {
+		content: '';
+		background: #233658;
+		position: absolute;
+    height: 2px;
+    width: 25px;
+    display: block;
+    transform: rotate(-45deg);
+	}
+}
+#info {
+	display: none;
+	position: absolute;
+	bottom: 150px;
+	place-content: center;
+	align-items: center;
+	width: 100%;
+}
+.number {
+	color: #bcbaba;
+	margin-left: 1rem;
+	font-weight: 500;
+}
+.menuInfo {
+	display: flex;
+	position: absolute;
+	bottom: 150px;
 }
