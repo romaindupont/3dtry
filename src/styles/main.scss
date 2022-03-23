@@ -188,7 +188,7 @@ span.titreOnglet {
 	align-items: center;
 }
 .elementPicker {
-	width: 200px;
+	width: 300px;
 	margin: 0 2rem;
 	text-align: center;
 	color: #183679;
@@ -270,7 +270,7 @@ span.titreOnglet {
 	font-weight: 900;
 	font-size: 0.7rem;
 	justify-content: center;
-	margin-top: 2rem;
+	/* margin-top: 2rem; */
 }
 .pickerVisorWithout,.ChinguardWithout {
 	border: 2px solid #183679;
@@ -302,7 +302,11 @@ span.titreOnglet {
 	cursor: pointer;
 	margin-right: 1rem;
 }
-
+.pickerScrew {
+	position: relative;
+	top: 50px;
+	width: 100%;
+}
 .materialCarbon,
 .materialBrillant,
 .materialMatt,
@@ -1036,18 +1040,85 @@ ul.menuEtapeUl > li {
 #info {
 	display: none;
 	position: absolute;
-	bottom: 150px;
+	bottom: 30px;
 	place-content: center;
 	align-items: center;
 	width: 100%;
+	flex-direction: column;
+	height: 60%;
 }
 .number {
 	color: #bcbaba;
-	margin-left: 1rem;
+	margin-left: 2rem;
 	font-weight: 500;
 }
 .menuInfo {
+	display: none;
+/* 	position: absolute;
+	bottom: 150px; */
+}
+.aeration {
+	width: 100%;
 	display: flex;
-	position: absolute;
-	bottom: 150px;
+	justify-content: center;
+	position: relative;
+	top: 50px;
+}
+
+.aerationDisplay {
+	text-transform: uppercase;
+	color: #233658;
+	padding-top: -1rem;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+.aerationWithout {
+	margin-right: 10rem;
+	&:hover {
+		background: #233658;
+		color: #fff;
+	}
+}
+.aerationWith {
+	&:hover {
+		background: #233658;
+		color: #fff;
+	}
+}
+.aerationWithout, .aerationWith {	
+	border: 1px solid #233658;
+	border-radius: 25px 25px 25px 25px;
+	padding: 10px 1rem;
+	width: 75px;
+	text-align: center;
+	cursor: pointer;
+
+}
+
+.shellDesign {
+	width: 100%;
+	flex-direction: row;
+}
+.allScrew {
+	display: flex;
+	flex-direction: column;
+	width: 5%;
+	position: relative;
+	&:hover > span {
+		visibility: visible;
+		&::after {
+			content: "";
+			width: 30px;
+			height: 4px;
+			position: absolute;
+			bottom: -5px;
+			background: #233658;
+			left: 25px;
+		}
+	}
+	& > span {
+		text-align: center;
+    visibility: hidden;
+	}
 }

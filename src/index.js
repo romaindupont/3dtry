@@ -312,21 +312,30 @@ const menuOpen = () => {
 	const sdTabs = document.querySelector('.sd-tabs');
 	sdTabs.addEventListener('click', () => {
     const menu = document.getElementById('info');
-    menu.classList.toggle('menu--open');
+   /*  menu.classList.toggle('menu--open'); */
   })
 }
 const HelmetPicker = () => {
 	const title = document.querySelector('.elementPicker');
 	const aeration = document.querySelector('.aeration');
+	const screw = document.querySelector('.pickerScrew');
+	console.log(title.textContent)
 	switch (title.textContent) {
 		case 'Element':
 			aeration.style.display = 'none';
+			screw.style.display = 'none';
 			break;
-		case 'Aération':
+		case 'Aérations1/16':
 			aeration.style.display = 'block';
+			screw.style.display = 'none';
+			break;
+		case 'Vis et rivets2/16':
+			aeration.style.display = 'none';
+			screw.style.display = 'block';
 			break;
 		default:
 			aeration.style.display = 'none';
+			screw.style.display = 'none';
 			break;
 	}
 	
