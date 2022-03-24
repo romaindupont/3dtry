@@ -319,23 +319,33 @@ const HelmetPicker = () => {
 	const title = document.querySelector('.elementPicker');
 	const aeration = document.querySelector('.aeration');
 	const screw = document.querySelector('.pickerScrew');
+	const shellColor = document.querySelector('.shellColor');
 	console.log(title.textContent)
 	switch (title.textContent) {
 		case 'Element':
 			aeration.style.display = 'none';
 			screw.style.display = 'none';
+			shellColor.style.display = 'none';
 			break;
 		case 'Aérations1/16':
 			aeration.style.display = 'block';
 			screw.style.display = 'none';
+			shellColor.style.display = 'none';
 			break;
 		case 'Vis et rivets2/16':
 			aeration.style.display = 'none';
 			screw.style.display = 'block';
+			shellColor.style.display = 'none';
+			break;
+		case 'Couleur principal4/16':
+			aeration.style.display = 'none';
+			screw.style.display = 'none';
+			shellColor.style.display = 'flex';
 			break;
 		default:
 			aeration.style.display = 'none';
 			screw.style.display = 'none';
+			shellColor.style.display = 'none';
 			break;
 	}
 	
@@ -830,67 +840,67 @@ const veldt = () => {
 		rubberChinguardMaterial.visible = true;
   })
 
-	const shellRed = document.querySelector('.shellColor--red');
+	const shellRed = document.querySelector('.carbon');
 	shellRed.addEventListener('click', () => {
 		bodyMaterial.color.set('#e72a2a');
   })
-	const shellBlue = document.querySelector('.shellColor--blue');
+	const shellBlue = document.querySelector('.white');
 	shellBlue.addEventListener('click', () => {
 		bodyMaterial.color.set('#5288ff');
   })
-	const shellGreen = document.querySelector('.shellColor--green');
+	const shellGreen = document.querySelector('.black');
 	shellGreen.addEventListener('click', () => {
 		bodyMaterial.color.set('#26892e');
   })
-	const shellYellow = document.querySelector('.shellColor--yellow');
+	const shellYellow = document.querySelector('.coolGrey');
 	shellYellow.addEventListener('click', () => {
 		bodyMaterial.color.set('#f4f74e');
   })
-	const shellBlack = document.querySelector('.shellColor--black');
+	const shellBlack = document.querySelector('.EstateBlue');
 	shellBlack.addEventListener('click', () => {
 		bodyMaterial.color.set('#000000');
   })
-	const shellWhite = document.querySelector('.shellColor--white');
+	const shellWhite = document.querySelector('.pirateGrey');
 	shellWhite.addEventListener('click', () => {
 		bodyMaterial.color.set('#ffffff');
   })
-	const shellGold = document.querySelector('.shellColor--gold');
+	const shellGold = document.querySelector('.duskBlue');
 	shellGold.addEventListener('click', () => {
 		bodyMaterial.color.set('#FFD700');
   })
-	const shellSilver = document.querySelector('.shellColor--silver');
+	const shellSilver = document.querySelector('.doubleCream');
 	shellSilver.addEventListener('click', () => {
 		bodyMaterial.color.set('#C0C0C0');
   })
-	const chinguardRed = document.querySelector('.chinguardColor--red');
+	const chinguardRed = document.querySelector('.rallyBlue');
 	chinguardRed.addEventListener('click', () => {
 		chainguardMaterial.color.set('#e72a2a');
   })
-	const chinguardBlue = document.querySelector('.chinguardColor--blue');
+	const chinguardBlue = document.querySelector('.yellowIris');
 	chinguardBlue.addEventListener('click', () => {
 		chainguardMaterial.color.set('#5288ff');
   })
-	const chinguardGreen = document.querySelector('.chinguardColor--green');
+	const chinguardGreen = document.querySelector('.icebergGreen');
 	chinguardGreen.addEventListener('click', () => {
 		chainguardMaterial.color.set('#26892e');
   })
-	const chinguardYellow = document.querySelector('.chinguardColor--yellow');
+	const chinguardYellow = document.querySelector('.blazingYellow');
 	chinguardYellow.addEventListener('click', () => {
 		chainguardMaterial.color.set('#f4f74e');
   })
-	const chinguardBlack = document.querySelector('.chinguardColor--black');
+	const chinguardBlack = document.querySelector('.greenDouble');
 	chinguardBlack.addEventListener('click', () => {
 		chainguardMaterial.color.set('#000000');
   })
-	const chinguardWhite = document.querySelector('.chinguardColor--white');
+	const chinguardWhite = document.querySelector('.blazingOrange');
 	chinguardWhite.addEventListener('click', () => {
 		chainguardMaterial.color.set('#ffffff');
   })
-	const chinguardGold = document.querySelector('.chinguardColor--gold');
+	const chinguardGold = document.querySelector('.limeGreen');
 	chinguardGold.addEventListener('click', () => {
 		chainguardMaterial.color.set('#FFD700');
   })
-	const chinguardSilver = document.querySelector('.chinguardColor--silver');
+	const chinguardSilver = document.querySelector('.vermillion');
 	chinguardSilver.addEventListener('click', () => {
 		chainguardMaterial.color.set('#C0C0C0');
   })
