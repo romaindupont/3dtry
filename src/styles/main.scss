@@ -371,7 +371,7 @@ input[type="color"]::-webkit-color-swatch {
 	align-items: center;
 	height: 50%;
 	position: absolute;
-	top: 185px;
+	top: 50px;
 }
 
 .shellDesign  {
@@ -1052,9 +1052,9 @@ ul.menuEtapeUl > li {
 }
 #info {
 	display: none;
+	justify-content: flex-start;
 	position: absolute;
-	bottom: 0px;
-	place-content: center;
+	top: 60px;
 	align-items: center;
 	width: 100%;
 	flex-direction: column;
@@ -1136,8 +1136,8 @@ ul.menuEtapeUl > li {
 }
 
 .roundColor {
-	width: 30px;
-	height: 30px;
+	width: 40px;
+	height: 40px;
 	border-radius: 50%;
 /* 	flex-direction: column; */
 	position: relative;
@@ -1180,95 +1180,7 @@ ul.menuEtapeUl > li {
 	}
 	
 }
-.colorPicker {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: linear-gradient(320deg, rgba(187,187,187,1) 0%, rgba(43,29,26,1) 5%,rgba(187,187,187,1) 10%, rgba(43,29,26,1) 15%,rgba(187,187,187,1) 20%, rgba(43,29,26,1) 25%,rgba(187,187,187,1) 30%, rgba(43,29,26,1) 35%,rgba(187,187,187,1) 40%, rgba(43,29,26,1) 45%,rgba(187,187,187,1) 50%, rgba(43,29,26,1) 55%,rgba(187,187,187,1) 60%, rgba(43,29,26,1) 65%,rgba(187,187,187,1) 70%, rgba(43,29,26,1) 75%,rgba(187,187,187,1) 80%, rgba(43,29,26,1) 85%,rgba(187,187,187,1) 90%, rgba(43,29,26,1) 95%,rgba(187,187,187,1) 100%);
-	position: absolute;
-	top: 63px;
-	left: 400px;
-}
 
-.colorPicker2 {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: linear-gradient(320deg, rgba(187,187,187,1) 0%, rgba(43,29,26,1) 2%,rgba(187,187,187,1) 4%, rgba(43,29,26,1) 6%,rgba(187,187,187,1) 8%, rgba(43,29,26,1) 10%,rgba(187,187,187,1) 12%, rgba(43,29,26,1) 14%,rgba(187,187,187,1) 16%, rgba(43,29,26,1) 18%,rgba(187,187,187,1) 20%, rgba(43,29,26,1) 22%,rgba(187,187,187,1) 24%, rgba(43,29,26,1) 26%,rgba(187,187,187,1) 28%, rgba(43,29,26,1) 30%,rgba(187,187,187,1) 32%, rgba(43,29,26,1) 34%,rgba(187,187,187,1) 36%, rgba(43,29,26,1) 38%,rgba(187,187,187,1) 40%,rgba(187,187,187,1) 42%, rgba(43,29,26,1) 44%,rgba(187,187,187,1) 46%, rgba(43,29,26,1) 48%,rgba(187,187,187,1) 50%, rgba(43,29,26,1) 52%,rgba(187,187,187,1) 54%, rgba(43,29,26,1) 56%,rgba(187,187,187,1) 58%, rgba(43,29,26,1) 60%,rgba(187,187,187,1) 62%, rgba(43,29,26,1) 64%,rgba(187,187,187,1) 66%, rgba(43,29,26,1) 68%,rgba(187,187,187,1) 70%, rgba(43,29,26,1) 72%,rgba(187,187,187,1) 74%, rgba(43,29,26,1) 76%, rgba(187,187,187,1) 78%, rgba(43,29,26,1) 80%, rgba(187,187,187,1) 82%, rgba(43,29,26,1) 84%, rgba(187,187,187,1) 86%, rgba(43,29,26,1) 88%,rgba(187,187,187,1) 90%, rgba(43,29,26,1) 92%,rgba(187,187,187,1) 94%, rgba(43,29,26,1) 96%,rgba(187,187,187,1) 98%, rgba(43,29,26,1) 100%);
-	position: absolute;
-	top: 63px;
-	left: 450px;
-}
-
-.colorPicker3 {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: linear-gradient(320deg, rgba(187, 187, 187, 1) 0%, rgba(43, 29, 26,1) 3%,rgba(187, 187, 187,1) 6%, rgb(43, 29, 26,1) 9%,rgba(187,187,187,1) 12%, rgba(43,29,26,1) 15%,rgba(187,187,187,1) 18%, rgba(43,29,26,1) 21%,rgba(187,187,187,1) 24%, rgba(43,29,26,1) 27%,rgba(187,187,187,1) 30%, rgba(43,29,26,1) 33%,rgba(187,187,187,1) 36%, rgba(43,29,26,1) 39%,rgba(187,187,187,1) 42%, rgba(43,29,26,1) 45%,rgba(187,187,187,1) 48%, rgba(43,29,26,1) 51%,rgba(187,187,187,1) 54%, rgba(43,29,26,1) 57%,rgba(187,187,187,1) 60%,rgba(187,187,187,1) 63%, rgba(43,29,26,1) 66%,rgba(187,187,187,1) 46%, rgba(43,29,26,1) 69%,rgba(187,187,187,1) 72%, rgba(43,29,26,1) 75%,rgba(187,187,187,1) 78%, rgba(43,29,26,1) 81%,rgba(187,187,187,1) 84%, rgba(43,29,26,1) 87%,rgba(187,187,187,1) 90%, rgba(43,29,26,1) 93%,rgba(187,187,187,1) 96%, rgba(43,29,26,1) 99%);
-	position: absolute;
-	top: 63px;
-	left: 500px;
-}
-
-.colorPicker4 {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: linear-gradient(320deg, rgba(43, 29, 26, 1) 0%, rgba(255,252,0,1) 50%, rgba(212,175,55,1) 75%, rgba(68,55,12,1) 100%);
-	position: absolute;
-	top: 63px;
-	left: 550px;
-}
-
-.colorPicker5 {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: linear-gradient(320deg, rgba(43,29,26,1) 0%, rgba(255,141,0,1) 50%, rgba(184,115,51,1) 75%, rgba(68,55,12,1) 100%);
-	position: absolute;
-	top: 63px;
-	left: 550px;
-}
-.colorPicker6 {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: linear-gradient(320deg, rgba(45,45,45,1) 0%, rgba(255,255,255,1) 50%, rgba(192,192,192,1) 75%, rgba(5,5,5,1) 100%);
-	position: absolute;
-	top: 63px;
-	left: 600px;
-}
-.colorPicker7 {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: linear-gradient(320deg, rgba(0,0,196,1) 0%, rgba(151,24,196,1) 35%, rgba(55,110,179,1) 65%, rgba(0,0,196,1) 100%);
-	position: absolute;
-	top: 63px;
-	left: 650px;
-}
-.colorPicker8 {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: linear-gradient(320deg, rgba(61,180,177,1) 0%, rgba(211,153,255,1) 28%, rgba(253,175,255,1) 50%, rgba(211,153,255,1) 75%, rgba(61,180,177,1) 100%);
-	position: absolute;
-	top: 63px;
-	left: 700px;
-}
-.colorPicker9 {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: linear-gradient(320deg, rgba(228,164,255,1) 0%, rgba(136,36,203,1) 28%, rgba(43,46,203,1) 50%, rgba(136,36,203,1) 75%, rgba(228,164,255,1) 100%);
-	position: absolute;
-	top: 63px;
-	left: 750px;
-}
-
-.colorList {
-	display: flex;
-}
 .carbon {
 	background: linear-gradient(320deg, rgba(187,187,187,1) 0%, rgba(43,29,26,1) 5%,rgba(187,187,187,1) 10%, rgba(43,29,26,1) 15%,rgba(187,187,187,1) 20%, rgba(43,29,26,1) 25%,rgba(187,187,187,1) 30%, rgba(43,29,26,1) 35%,rgba(187,187,187,1) 40%, rgba(43,29,26,1) 45%,rgba(187,187,187,1) 50%, rgba(43,29,26,1) 55%,rgba(187,187,187,1) 60%, rgba(43,29,26,1) 65%,rgba(187,187,187,1) 70%, rgba(43,29,26,1) 75%,rgba(187,187,187,1) 80%, rgba(43,29,26,1) 85%,rgba(187,187,187,1) 90%, rgba(43,29,26,1) 95%,rgba(187,187,187,1) 100%);
 }
@@ -1362,10 +1274,23 @@ background: #000;
 }
 
 .colorList {
+	display: flex;
 	overflow-x: scroll;
 	overflow-y: hidden;
 	width: 30%;
-	height: 45%;
+	height: 60%;
+	top: 30px;
+	position: relative;
+	cursor: pointer;
+	&::-webkit-scrollbar-button {
+    background: red;
+} /* {
+		color: red;
+		background: green; */
+	/* } */
+	/* &::-webkit-scrollbar {
+		display: none;
+		} */
 }
 
 .colorP {
